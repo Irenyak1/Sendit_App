@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="author" content="Irene Nyakate">
-    <title>index page | Sendit_App</title>
+    <title>login_admin page | Sendit_App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel='stylesheet' type='text/css' href='assets/css/main.css'>
@@ -19,20 +19,21 @@
         </div>
         <div class="menu">
             <a href="index.html">Home</a>
-            <a href="login.html">Login</a>
+            <a href="login_admin.html">Login</a>
             <a href="signup.html">Signup</a>
         </div>
 
-    </div>
-    <div id="glob">
-        <h1>Welcome to Renex delivery services</h1>
-        <img class="img1" src="Assets/images/parcel.jpg" />
-    </div>
-    <div class= "text">
-        <p>We send both big and small parcels across the globe</p>
-        <p>Our services are a class above, please try them today and you will not regret</p>
-
-
+        <div class="sign">
+            <form method="POST" action="admin_page.html">
+                <h2>Login to your account</h2>
+                <input type="text" placeholder="Enter your username" required>
+                <input type="password" placeholder="Enter your password" required>
+                <button type="submit" class="login_btn">Login</button>
+                <p class="footer">
+                    If you have no account <a href="signup.html"><b>Signup here</b></a>
+                </p>
+            </form>
+        </div>
     </div>
 
 
