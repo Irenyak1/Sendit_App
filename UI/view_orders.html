@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Irene Nyakate">
+    <title>View all orders page | Sendit_App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel='stylesheet' type='text/css' href='assets/css/main.css'>
+    <script src="assets/js/js_file.js"></script>
+    <!-- Fonts for this app -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+</head>
+
+<body>
+    <ul>
+        <li class="log">
+            <a href="#">SenditFast</a>
+        </li>
+
+        <li>
+            <a href="index.html">Home</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropbtn">Orders</a>
+            <div class="dropdown-content">
+                <a href="make_order.html">Make an order</a>
+                <a href="view_my_orders.html">View my orders</a>
+                <a href="view_orders.html">View all orders</a>
+            </div>
+        </li>
+        <li>
+            <a href="index.html">Logout</a>
+        </li>
+    </ul>
+    <h2>All Orders</h2>
+
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filter by Status..">
+
+    <table id="myTable">
+        <tr>
+            <th>Status</th>
+            <th>Sender's Name</th>
+            <th>Order Id</th>
+            <th>Pick up location</th>
+            <th>Destination</th>
+            <th>Price</th>
+
+        </tr>
+        <tr>
+            <td>Delivered</td>
+            <td>Jayden Nambi</td>
+            <td><a class = "table_a" href="details_of_order.html">#123</td>
+            <td>Kampala</td>
+            <td>Nairobi</td>
+            <td>$20</td>
+
+        </tr>
+        <tr>
+            <td>In transit</td>
+            <td>Rosette</td>
+            <td>#456</td>
+            <td>Kampala</td>
+            <td>Congo</td>
+            <td>$30</td>
+
+        </tr>
+        <tr>
+            <td>Delivered</td>
+            <td>John</td>
+            <td>#127</td>
+            <td>Kampala</td>
+            <td>Juba</td>
+            <td>$20</td>
+
+        </tr>
+        <tr>
+            <td>Delivered</td>
+            <td>Mary</td>
+            <td>#678</td>
+            <td>Kampala</td>
+            <td>USA</td>
+            <td>$38</td>
+
+
+        </tr>
+
+        <tr>
+            <td>Delivered</td>
+            <td>Kelly</td>
+            <td>#567</td>
+            <td>Kampala</td>
+            <td>USA</td>
+            <td>$50</td>
+
+        </tr>
+        <tr>
+            <td>In transit</td>
+            <td>Maama</td>
+            <td>#489</td>
+            <td>Kampala</td>
+            <td>Kenya</td>
+            <td>$39</td>
+
+        </tr>
+        <tr>
+            <td>In transit</td>
+            <td>Jarry</td>
+            <td>#19</td>
+            <td>Kampala</td>
+            <td>Mutukula</td>
+            <td>$20</td>
+
+        </tr>
+        <tr>
+            <td>In transit</td>
+            <td>Becky</td>
+            <td>#908</td>
+            <td>Kampala</td>
+            <td>Mombasa</td>
+            <td>$36</td>
+        </tr>
+
+    </table>
+    <div class="clearfix">
+        <button type="button" class="cancelbtn">
+            <a href="user_page.html">Return</button>
+    </div>
+
+</body>
+
+</html>
