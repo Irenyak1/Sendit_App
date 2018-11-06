@@ -1,12 +1,8 @@
 # Sendit_App
 This App  allows the admin to monitor Parcel orders from different users. The admin 
-
 can be able to know the parcels being sent, their pickup and drop off locations. It 
-
 also helps the user to create an account and login and then send his or her parcel 
-
 to any destination of the world. The user can also be able see the number of orders 
-
 they have made. 
 
 ##  Prerequisites
