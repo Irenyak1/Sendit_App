@@ -1,0 +1,139 @@
+body {
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.navig {
+    background-color: #43677f;
+    border-bottom: 1px solid #EAEAEB;
+    text-align: right;
+    height: 60px;
+    line-height: 60px;
+}
+
+.log {
+    float: left;
+    padding: 0% 20%;
+}
+
+.log a {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 60px;
+}
+
+.log a:hover {
+    color: #f2f2f2;
+}
+
+.menu a {
+    clear: right;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 600;
+    margin: 0 10px;
+    line-height: 60px;
+    overflow: scroll;
+}
+
+.menu a:hover {
+    color: #f2f2f2;
+}
+
+#glob {
+    text-align: center;
+}
+
+.img1 {
+    width: 40%;
+    height: 45%;
+    position: relative;
+}
+
+.text {
+    color: black;
+    text-align: center;
+    font-weight: bold
+}
+
+h2 {
+    font-size: 30px;
+    text-align: left;
+
+}
+
+input[type=text], [type=password] {
+    width: 100%;
+    padding: 14px;
+    margin: 0px 0 10px 0;
+    color: #495057;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+}
+
+.sign {
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    max-width: 380px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.login_btn {
+    color: #ffffff;
+    cursor: pointer;
+    background-color: green;
+    padding: 14px 18px;
+    margin: 8px 0;
+    width: 100%;
+    opacity: 1px;
+    border: none;
+    border-radius: 4px;
+    font-size: 17px;
+    font-family: inherit;
+    font-weight: 580px;
+}
+
+.btn-login:hover {
+    opacity: 1;
+}
+
+.footer {
+    font-size: 12px;
+    text-align: left;
+}
+
+.footer a {
+    color: #43467f;
+    text-decoration: underline;
+    font-size: 14px
+}
+
+.signup_btn {
+    opacity: 0.7;
+    border: none;
+    border-radius: 4px;
+    font-size: 17px;
+    font-family: inherit;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    background-color: green;
+    padding: 14px 18px;
+    margin: 8px 0;
+    width: 100%;
+    
+}
+
+.signup_btn:hover {
+    opacity: 1;
+}
