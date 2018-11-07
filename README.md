@@ -19,18 +19,18 @@ they have made.
 
 ##  List of UI pages
        
-- [Index page]()
-- [Admin login page]()
-- [Admin profile page]()
-- [Admin to view all orders page]()
-- [User to signup account page]()
-- [User login page]()
-- [User profile page]()
-- [User to make a delivery order page]()
-- [User to view their orders page]()
-- [User to view all orders page]()
-- [User to view details of a delivery order page]()
+- [Index page](https://irenyak1.github.io/Sendit_App/UI/index.html)
+- [Admin login page](https://irenyak1.github.io/Sendit_App/UI/login_admin.html)
+- [Admin profile page](https://irenyak1.github.io/Sendit_App/UI/admin_page.html)
+- [Admin to view all orders page](https://irenyak1.github.io/Sendit_App/UI/view_orders_admin.html)
+- [User to signup account page](https://irenyak1.github.io/Sendit_App/UI/signup.html)
+- [User login page](https://irenyak1.github.io/Sendit_App/UI/login.html)
+- [User profile page](https://irenyak1.github.io/Sendit_App/UI/user_page.html)
+- [User to make a delivery order page](https://irenyak1.github.io/Sendit_App/UI/make_order.html)
+- [User to view their orders page](https://irenyak1.github.io/Sendit_App/UI/view_my_orders.html)
+- [User to view all orders page](https://irenyak1.github.io/Sendit_App/UI/view_orders.html)
+- [User to view details of a delivery order page](https://irenyak1.github.io/Sendit_App/UI/details_of_order.html)
 
 
-[The App user interface can be found here]()
+[The App user interface can be found here](https://irenyak1.github.io/Sendit_App/UI/index.html)
 
