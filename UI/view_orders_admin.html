@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Irene Nyakate">
+    <title>View orders by admin page | Sendit_App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel='stylesheet' type='text/css' href='assets/css/main.css'>
+    <script src="assets/js/js_file.js"></script>
+    <!-- Fonts for this app -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+</head>
+
+<body>
+    <ul>
+        <li class="log">
+            <a href="#">SenditFast</a>
+        </li>
+
+        <li>
+            <a href="index.html">Home</a>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropbtn">Orders</a>
+            <div class="dropdown-content">
+                <a href="make_order.html">Make an order</a>
+                <a href="view_orders.html">View orders</a>
+            </div>
+        </li>
+        <li>
+            <a href="index.html">Logout</a>
+        </li>
+    </ul>
+    <h2>Orders</h2>
+
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filter by sender's name..">
+
+    <table id="myTable">
+        <tr>
+            <th>Sender's Name</th>
+            <th>Order Id</th>
+            <th>Pick up location</th>
+            <th>Destination</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Present location</th>
+        </tr>
+        <tr>
+            <td>Jayden Nambi</td>
+            <td>#123</td>
+            <td>Kampala</td>
+            <td>Nairobi</td>
+            <td>$20</td>
+            <td>
+                <select class="stat">
+                    <option value=" "></option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="In transit">In transit</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </td>
+            <td>
+                <select class="stat">
+                    <option value=" "></option>
+                    <option value="Delivered">In sender country</option>
+                    <option value="In transit">At the airport</option>
+                    <option value="Cancelled">In receiver country</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Rosette</td>
+            <td>#456</td>
+            <td>Kampala</td>
+            <td>Congo</td>
+            <td>$30</td>
+            <td>
+                <select class="stat">
+                    <option value=" "></option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="In transit">In transit</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </td>
+            <td>
+                <select class="stat">
+                    <option value=" "></option>
+                    <option value="Delivered">In sender country</option>
+                    <option value="In transit">At the airport</option>
+                    <option value="Cancelled">In receiver country</option>
+                </select>
+            </td>
+
+        </tr>
+        <tr>
+            <td>Jayden Nambi</td>
+            <td>#123</td>
+            <td>Kampala</td>
+            <td>Nairobi</td>
+            <td>$20</td>
+            <td>
+                <select>
+                    <option value=" "></option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="In transit">In transit</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </td>
+            <td>
+                <select class="stat">
+                    <option value=" "></option>
+                    <option value="Delivered">In sender country</option>
+                    <option value="In transit">At the airport</option>
+                    <option value="Cancelled">In receiver country</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Rosette</td>
+            <td>#456</td>
+            <td>Kampala</td>
+            <td>Congo</td>
+            <td>$30</td>
+            <td>
+                <select class="stat">
+                    <option value=" "></option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="In transit">In transit</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </td>
+            <td>
+                <select class="stat">
+                    <option value=" "></option>
+                    <option value="Delivered">In sender country</option>
+                    <option value="In transit">At the airport</option>
+                    <option value="Cancelled">In receiver country</option>
+                </select>
+            </td>
+
+        </tr>
+    </table>
+    <div class="clearfix">
+        <button type="button" class="cancelbtn">
+            <a href="admin_page.html">Return</button>
+    </div>
+
+</body>
+
+</html>
