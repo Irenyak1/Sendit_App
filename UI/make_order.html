@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="author" content="Irene Nyakate">
+	<title>Make order page | Sendit_App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel='stylesheet' type='text/css' href='assets/css/main.css'>
+	<!-- Fonts for this app -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700" rel="stylesheet">
+</head>
+
+<body>
+	<ul>
+		<li class="log">
+			<a href="#">SenditFast</a>
+		</li>
+
+		<li>
+			<a href="index.html">Home</a>
+		</li>
+		<li class="dropdown">
+			<a href="#" class="dropbtn">Orders</a>
+			<div class="dropdown-content">
+				<a href="make_order.html">Make an order</a>
+				<a href="view_my_orders.html">View my orders</a>
+				<a href="view_orders.html">View all orders</a>
+			</div>
+		</li>
+		<li>
+			<a href="index.html">Logout</a>
+		</li>
+	</ul>
+	<div class="container">
+		<form>
+			<h1>Parcel Delivery Order Form</h1>
+			<h3>Please fill in this form to place an order.</h3>
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<label for="id">
+								<b>Order ID:</b>
+							</label>
+						</td>
+						<td>
+							<input type="text" placeholder="id" name="id" required="required" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="sname">
+								<b>Sender's Name:</b>
+							</label>
+						</td>
+						<td>
+							<input type="text" placeholder="Enter Name" name="sname" required="required" />
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="contact">
+								<b>Sender's Contact:</b>
+							</label>
+						</td>
+						<td>
+							<input type="text" placeholder="Enter phone number" name="phone" required="required" />
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="location">
+								<b>Pick up location</b>
+							</label>
+						</td>
+						<td>
+							<input type="text" placeholder="location" name="location" required="required" />
+						<td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="dest">
+								<b>Destination:</b>
+							</label>
+						</td>
+						<td>
+							<select class="stat">
+								<option value=""></option>
+								<option value="Kenya">Kenya</option>
+								<option value="USA">USA</option>
+								<option value="Juba">Juba</option>
+								<option value="Canada">Canada</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="price">
+								<b>Price of order:</b>
+							</label>
+						</td>
+						<td>
+							<input type="text" placeholder="Enter the price" name="price" required="required" />
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label for="quantity">
+								<b>Quantity:</b>
+							</label>
+						</td>
+						<td>
+							<input type="text" placeholder="quantity" name="amount" required="required" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="clearfix">
+				<button type="button" class="cancelbtn">
+					<a href="make_order.html">Cancel</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="submit" class="submit-btn">
+					<a href="user_page.html">Submit</button>
+			</div>
+		</form>
+	</div>
+</body>
+
+</html>
