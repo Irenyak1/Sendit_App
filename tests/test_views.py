@@ -1,5 +1,6 @@
 import unittest
 from flask import json
+from api.models import User
 from api.views import app
 
 
