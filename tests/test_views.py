@@ -21,5 +21,7 @@ class ApiTestCase(unittest.TestCase):
             self.assertIn('Please fill all the feilds',
                           responseJson['message'])
 
+    
+    
     def tearDown(self):
         pass
