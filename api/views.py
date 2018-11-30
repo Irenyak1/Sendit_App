@@ -1,109 +1,81 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, jsonify
 from api.models import User, Order
+from api.controllers import Controller_User, Controller_Order
 
 
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     """ Endpoint to get the index page of the application"""
-    my_response = "You are most welcome to our home page"
-    return jsonify(my_response), 200
+    # my_response = "You are most welcome to our home page"
+    return Controller_User.get_index_page()
 
 
-@app.route('/auth/login', methods=['POST'])
+@app.route('/api/v1/signup', methods=['POST'])
+def signup_user():
+    """ Endpoint to signup a user """
+    return Controller_User.signup_user()
+
+
+@app.route('/api/v1/login', methods=['POST'])
 def login():
     """ Endpoint for a user to login """
-    user_data = request.get_json()
-    # get login data from user
-    name = user_data.get('username')
-    password = user_data.get('password')
-    role = user_data.get('role')
+    return Controller_User.login()
 
-    user = User(name, password, role)
-    login_result = user.login()
 
-    if login_result:
-        return jsonify('Welcome {}'.format(login_result)), 200
+@app.route('/api/v1/users', methods=['GET'])
+def get_all_users():
+    """ Endpoint for the admin to get all users that have signed up 
+        for accounts """
+    if User.role == 'admin':
+        return Controller_User.get_all_users()
     return jsonify({
-                'message': 'Sorry please login with the right credentials'
-                }), 400
+            'message': 'You have no rights to access users'
+            }), 400
+
 
 @app.route('/api/v1/orders', methods=['POST'])
 def create_a_delivery_order():
     """ Endpoint to create a delivery order by the user """
-    if User.user_role == 'user':
-        order_data = request.get_json()
-        # get sale data
-        user_id = order_data.get('user_id')
-        user_name = order_data.get('user_name')
-        contact = order_data.get('contact')
-        pickup_location = order_data.get('pickup_location')
-        destination = order_data.get('destination')
-        weight = order_data.get('weight')
-        price = order_data.get('price')
-     
-        # validate sale data
-        if not order_data:
-            return jsonify({'message': 'Please fill all the feilds'}), 400
+    if User.role == 'user':
+        return Controller_Order.create_a_delivery_order()
 
-        if not user_id or user_id == "":
-            return jsonify({
-                'message': 'Oops! fill in user_id and should be an integer'
+    return jsonify({
+            'message': 'Only users can create delivery orders.'
             }), 400
 
-        if not user_name or user_name == "":
-            return jsonify({
-                'message': 'sorry! user name is required and can not be an empty string.'
-            }), 400
 
-        if not contact or contact == "":
-            return jsonify({
-                'message': 'Please! the contact is required, it should not be blank.'
-            }), 400
-       
-        if type(contact) != int:
-            return jsonify({
-                'message': 'Please the contact should be an integer.'
-            }), 400
+@app.route('/api/v1/orders', methods=['GET'])
+def get_all_orders():
+    """ Endpoint for the admin to get all delivery orders
+        created by users
+    """
+    if User.role == 'admin':
+        return Controller_Order.get_all_orders()
 
-        if not pickup_location  or pickup_location == "":
-            return jsonify({
-                'message': 'Please! pickup location is required and can not be an empty string.'
-            }), 400
-        
-        if not destination  or destination == "":
-            return jsonify({
-                'message': 'Please! the destination is required and can not be an empty string.'
-            }), 400
-        
-        if not weight  or weight == "":
-            return jsonify({
-                'message': 'Please! the destination is required and can not be an empty string.'
-            }), 400
+    return jsonify({'message': 'You have no rights to access orders'}), 400
 
-        if type(weight) != int:
-            return jsonify({
-                'message': 'Please! the weight should be filled as an integer.'
-            }), 400
-        
-        if not price or price == "":
-            return jsonify({
-                'message': 'Please! the price is required '
-            }), 400
 
-        if type(weight) != int:
-            return jsonify({
-                'message': 'Please! the price is required as an integer.'
-            }), 400
+@app.route('/api/v1/orders/<int:order_id>', methods=['GET'])
+def get_a_delivery_order(order_id):
+    """ Endpoint to fetch a single delivery order using order id """
+    return Controller_Order.get_a_delivery_order(order_id)
 
-        new_order = Order(user_id, user_name, contact, pickup_location, destination, weight, price)
-        result_create_a_delivery_order = new_order.create_a_delivery_order()
 
-        if result_create_a_delivery_order:
-            return jsonify({'message': 'Sale order created successfully',
-                            'new_order': new_order
-                          }), 201
+@app.route('/api/v1/orders/users/<int:user_id>', methods=['GET'])
+def get_delivery_order(user_id):
+    """ Endpoint to fetch a single delivery order using user id  """
+    return Controller_Order.get_delivery_order(user_id)
 
-    return jsonify({'message': 'You can not create a delivery order if you are not a user.'}), 400
+
+@app.route('/api/v1/orders/<int:order_id>', methods=['PUT'])
+def cancel_order(order_id):
+    """ Endpoint to cancel a single delivery order by user id  """
+    return Controller_Order.cancel_order(order_id)
+
+@app.route('/api/v1/users/<int:user_id>/<int:order_id>/cancel', methods = ['PUT'])
+def cancel_an_order_by_a_user(order_id, user_id):
+    """Cancel a delivery order by a user"""
+    return Controller_Order.cancel_an_order_by_a_user(order_id, user_id)

@@ -1,51 +1,51 @@
-from flask import Flask, request, jsonify, make_response
+
+""" A global variable called USERS """
+USERS = [{"user_name": "admin", "password": "admin", "role": "admin"},
+         {"user_name": "Maxie", "password": "elite", "role": "user"}]
+# This is a list that will store all the users
 
 
-def get_index_page():
-    return "You are most welcome to our home page"
-
-""" This is a global variable called USERS """
-USERS = [{"username": "admin", "password": "admin", "role": "admin"},
-         {"username": "Maxie", "password": "elite", "role": "user"}]
-
-
+#  This defines the user class
 class User:
     """
     This class defines the user in terms of
-    the username, password and user_role.
+    the user_name, password and role.
     """
+    role = ""
 
-    user_role = ""
-
-    def __init__(self, username, password, role):
-        self.username = username
+    def __init__(self, user_name, email, password, role, user_id):
+        self.user_name = user_name
+        self.email = email
         self.password = password
         self.role = role
+        self.user_id = len(USERS) + 1
 
-    def login(self):
-        """ This method allows the user to login after cross checking their
-            username, password and user role
-        """
-        for user in USERS:
-            if user['username'] == self.username and user['password'] == self.password and user['role'] == self.role:
-                User.user_role = self.role
-        return self.user_role
+    def to_dict(self):
+        user = {
+            "user_name": self.user_name,
+            "email": self.email,
+            "password": self.password,
+            "role": self.role,
+            "user_id": self.user_id
+        }
+
+        return user
+
+        
+ORDERS = []
+# This is a list that will store all the orders
 
 
+# This defines the order class
 class Order:
     """
     This class defines a parcel delivery order in terms of
-    user_id, user_name, contact, order_id, pickup_location, destination, weight, price.
-    """
-
-    ORDERS = []
-    """
-    This is a list that will store all the deliverry orders
-    that will be  created.
+    user_id, user_name, contact, pickup_location,
+    destination, weight, price and order_id,
     """
 
     def __init__(self, user_id, user_name, contact,
-                 pickup_location, destination, weight, price):
+                 pickup_location, destination, weight, price, order_id):
         self.user_id = user_id
         self.user_name = user_name
         self.contact = contact
@@ -53,32 +53,18 @@ class Order:
         self.destination = destination
         self.weight = weight
         self.price = price
-    
-    def create_a_delivery_order(self):
-        """ This method allows a user to create a delivery order.
-            And it also generates the order_id automatically.
-        """
-        if User.user_role == 'user':
-            my_orders = dict
-            if not Order.ORDERS:
-                order_id = 1
-        else:
-            order_id = Order.ORDERS[-1].get('order_id') + 1
+        self.order_id = len(ORDERS) + 1
 
-        self.my_orders = {
-            'user_id': self.user_id,
-            'user_name': self.user_name,
-            'contact': self.contact,
-            'pickup_location': self.pickup_location,
-            'destination': self.destination,
-            'weight': self.weight,
-            'price': self.price,
-            'order_id': order_id
+    def to_dict(self):
+        order = {
+            "user_id": self.user_id,
+            "user_name": self.user_name,
+            "contact": self.contact,
+            "pickup_location": self.pickup_location,
+            "destination": self.destination,
+            "weight": self.weight,
+            "price": self.price,
+            "order_id": self.order_id
         }
 
-        Order.ORDERS.append(self.my_orders)
-
-        return 'You have created a delivery order.'
-
-
-        
+        return order
