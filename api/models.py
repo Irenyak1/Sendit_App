@@ -1,7 +1,6 @@
 
 """ A global variable called USERS """
-USERS = [{"user_name": "admin", "password": "admin", "role": "admin"},
-         {"user_name": "Maxie", "password": "elite", "role": "user"}]
+users_list = []
 # This is a list that will store all the users
 
 
@@ -11,28 +10,26 @@ class User:
     This class defines the user in terms of
     the user_name, password and role.
     """
-    role = ""
+    # role = ""
 
-    def __init__(self, user_name, email, password, role, user_id):
+    def __init__(self, user_name, email, password, role):
         self.user_name = user_name
         self.email = email
         self.password = password
         self.role = role
-        self.user_id = len(USERS) + 1
+       
 
     def to_dict(self):
-        user = {
+        return {
+            "user_id": len(users_list)+1,
             "user_name": self.user_name,
             "email": self.email,
             "password": self.password,
-            "role": self.role,
-            "user_id": self.user_id
-        }
-
-        return user
+            "role": self.role
+        }    
 
         
-ORDERS = []
+orders_list = []
 # This is a list that will store all the orders
 
 
@@ -44,8 +41,7 @@ class Order:
     destination, weight, price and order_id,
     """
 
-    def __init__(self, user_id, user_name, contact,
-                 pickup_location, destination, weight, price, order_id):
+    def __init__(self, user_id, user_name, contact, pickup_location, destination, weight, price, status):
         self.user_id = user_id
         self.user_name = user_name
         self.contact = contact
@@ -53,10 +49,12 @@ class Order:
         self.destination = destination
         self.weight = weight
         self.price = price
-        self.order_id = len(ORDERS) + 1
+        self.status = status
+     
 
     def to_dict(self):
-        order = {
+        return {
+            "order_id":len(orders_list) + 1,
             "user_id": self.user_id,
             "user_name": self.user_name,
             "contact": self.contact,
@@ -64,7 +62,7 @@ class Order:
             "destination": self.destination,
             "weight": self.weight,
             "price": self.price,
-            "order_id": self.order_id
+            "status": self.status
         }
-
-        return order
+        
+        

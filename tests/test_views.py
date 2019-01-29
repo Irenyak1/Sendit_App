@@ -4,68 +4,106 @@ from api.models import User, Order
 from api.views import app
 
 
-# test_new_user = {
-#      "user_name": "Irynah", 
-#      "password": "gilgal",
-#      "role": "user"
-#     }
-
-
 class ApiTestCase(unittest.TestCase):
+
+    test_new_user = {
+     "user_name": "Irynah", 
+     "email": "gal@gmail.com",
+     "password": "gilgal",
+     "role": "user"
+    }
 
     def setUp(self):
         "Sets up the application configuration"
 
         self.test_client = app.test_client()
 
-
     """Test for fetching index page"""
     def test_get_index_page(self):
         with self.test_client:
             response = self.test_client.get('/')
+            data = json.loads(response.data)
+            self.assertEqual(data ['message'],'You are most welcome to our home page')
+            self.assertEqual(data ['status'],200)
             self.assertEqual(response.status_code, 200 )
-            self.assertIn('You are most welcome to our home page', response.data.decode())    
+            # self.assertIn('You are most welcome to our home page',responseJson['message'] )    
     
     """Tests for user signup"""    
     def test_signup_user(self):
         with self.test_client:
-            response = self.test_client.post('/api/v1/signup',
-                                             content_type='application/json',
-                                             data=json.dumps(dict(user_name="Irynah",
-                                                                 email="gal@gmail.com",
-                                                                 password="gilgal",
-                                                                 role="admin")))
-            self.assertEqual(response.status_code, 201)
-            responseJson = json.loads(response.data.decode())
-            self.assertIn('Thank you for signing up',
-                          responseJson['message'])
+            response = self.test_client.post('/api/v1/signup', json = self.test_new_user)
+            data = json.loads(response.data)
+            self.assertEqual(data ['message'],'Thank you for signing up')
+            self.assertEqual(data ['status'],201)
+            self.assertEqual(response.status_code, 200 )
     
-    """Test for user login"""
-
-    def test_login_user(self):
+    def test_signup_user_without_user_data(self):
+        test_new_user = {   }
         with self.test_client:
-            response = self.test_client.post('/api/v1/login',
-                                                content_type='application/json',
-                                                data=json.dumps(dict(username="Irynah",
-                                                                     password="gilgal",
-                                                                     role="admin")))
-            self.assertEqual(response.status_code, 201)
-            # responseJson = json.loads(response.data.decode())
-            # self.assertIn(f"Welcome {role}, You are logged in",
-                            # responseJson['message'])
+            response = self.test_client.post('/api/v1/signup', json = test_new_user)
+            data = json.loads(response.data)
+            self.assertEqual(data ['message'],'Please fill all the feilds')
+            self.assertEqual(data ['status'],400)
+            self.assertEqual(response.status_code, 200 )
 
-
-
-    def test_if_order_data_is_empty(self):
+    def test_signup_user_without_username(self):
+        
+        test_new_user = {
+        "user_name": "", 
+        "email": "gal@gmail.com",
+        "password": "gilgal",
+        "role": "user"
+    }
         with self.test_client:
-            User.role = 'user'
-            response = self.test_client.post('/api/v1/orders', 
-                                             content_type='application/json',
-                                             data=json.dumps(dict()))
-            self.assertEqual(response.status_code, 400)
-            responseJson = json.loads(response.data.decode())
-            self.assertIn('Please fill all the feilds',
-                          responseJson['message'])
+            response = self.test_client.post('/api/v1/signup', json = test_new_user)
+            data = json.loads(response.data)
+            self.assertEqual(data ['message'],'User name should be letters of the alphabet')
+            self.assertEqual(data ['status'],400)
+            self.assertEqual(response.status_code, 200 )
+
+    def test_signup_user_without_email(self):
+        
+        test_new_user = {
+        "user_name": "Irenyakss", 
+        "email": "",
+        "password": "gilgal",
+        "role": "user"
+    }
+        with self.test_client:
+            response = self.test_client.post('/api/v1/signup', json = test_new_user)
+            data = json.loads(response.data)
+            self.assertEqual(data['message'],'Please email is required')
+            self.assertEqual(data['status'],400)
+            self.assertEqual(response.status_code, 200 )
+
+
+    
+    # """Test for user login"""
+
+    # def test_login_user(self):
+    #     with self.test_client:
+    #         response = self.test_client.post('/api/v1/login',
+    #                                             content_type='application/json',
+    #                                             data=json.dumps(dict(username="Irynah",
+    #                                                                  password="gilgal",
+    #                                                                  role="admin")))
+    #         self.assertEqual(response.status_code, 201)
+    #         responseJson = json.loads(response.data.decode())
+    #         self.assertIn(f'Welcome {role}, You are logged in',
+    #                         responseJson['message'])
+
+
+
+    # def test_if_order_data_is_empty(self):
+    #     with self.test_client:
+    #         User.role = 'user'
+    #         response = self.test_client.post('/api/v1/orders', 
+    #                                          content_type='application/json',
+    #                                          data=json.dumps(dict()))
+    #         self.assertEqual(response.status_code, 400)
+    #         responseJson = json.loads(response.data.decode())
+    #         self.assertIn('Please fill all the feilds',
+    #                       responseJson['message'])
 
     # def test_if_user_id_is_empty(self):
     #     with self.test_client:

@@ -1,4 +1,4 @@
-astroid==2.0.4
+astroid
 atomicwrites==1.2.1
 attrs==18.2.0
 autopep8==1.4.1
@@ -26,7 +26,7 @@ py==1.7.0
 pycodestyle==2.4.0
 pyflakes==1.6.0
 PyJWT==1.6.4
-pylint==2.1.1
+pylint
 pytest==3.9.2
 pytest-cov==2.6.0
 requests==2.20.0
