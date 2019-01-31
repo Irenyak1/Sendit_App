@@ -8,6 +8,7 @@ app = Flask(__name__)
 usercontroller = User_Controller()
 ordercontroller = Order_Controller()
 
+
 @app.route('/', methods=['GET'])
 def index():
     """ Endpoint to get the index page of the application"""
@@ -28,15 +29,25 @@ def login():
 
 @app.route('/api/v1/users', methods=['GET'])
 def get_all_users():
-    """ Endpoint for the admin to get all users that have signed up 
-        for accounts """
+    """ Endpoint to get all users that have
+        signed up for accounts
+    """
     return usercontroller.get_all_users()
-    
+
+
+@app.route('/api/v1/users/<int:user_id>', methods=['GET'])
+def get_a_single_user(user_id):
+    """ Endpoint to get a single user who has
+        signed up for an account
+    """
+    return usercontroller.get_a_single_user(user_id)
+
 
 @app.route('/api/v1/orders', methods=['POST'])
 def create_a_delivery_order():
     """ Endpoint to create a delivery order by the user """
     return ordercontroller.create_a_delivery_order()
+
 
 @app.route('/api/v1/orders', methods=['GET'])
 def get_all_orders():
@@ -45,16 +56,24 @@ def get_all_orders():
     """
     return ordercontroller.get_all_orders()
 
+
 @app.route('/api/v1/orders/<int:order_id>', methods=['GET'])
 def get_a_delivery_order(order_id):
     """ Endpoint to fetch a single delivery order using order id """
     return ordercontroller.get_a_delivery_order(order_id)
 
 
-@app.route('/api/v1/orders/users/<int:user_id>', methods=['GET'])
-def get_delivery_order(user_id):
-    """ Endpoint to fetch a single delivery order using user id  """
-    return ordercontroller.get_delivery_order(user_id)
+@app.route('/api/v1/users/orders/<int:user_id>', methods=['GET'])
+def get_all_delivery_orders_by_a_user(user_id):
+    """ Endpoint to fetch all delivery orders made by a user by user id  """
+    return ordercontroller.get_all_delivery_orders_by_a_user(user_id)
+
+
+@app.route('/api/v1/users/orders/<int:order_id>/<int:user_id>',
+           methods=['GET'])
+def get_a_delivery_order_by_a_user(order_id, user_id):
+    """ Endpoint to fetch a single delivery order by a user """
+    return ordercontroller.get_a_delivery_order_by_a_user(order_id, user_id)
 
 
 @app.route('/api/v1/orders/<int:order_id>/cancel', methods=['PUT'])
@@ -62,7 +81,16 @@ def cancel_order(order_id):
     """ Endpoint to cancel a single delivery order by user id  """
     return ordercontroller.cancel_order(order_id)
 
-@app.route('/api/v1/users/<int:user_id>/<int:order_id>/cancel', methods = ['PUT'])
+
+@app.route('/api/v1/orders/users/<int:order_id>/<int:user_id>/cancel',
+           methods=['PUT'])
 def cancel_an_order_by_a_user(order_id, user_id):
     """Cancel a delivery order by a user"""
-    return ordercontroller.cancel_an_order_by_a_user(order_id, user_id)
+    return ordercontroller.cancel_user_order(order_id, user_id)
+
+
+@app.route('/api/v1/orders/users/<int:user_id>/cancel',
+           methods=['PUT'])
+def cancel_all_orders_by_a_user(user_id):
+    """Cancel all delivery orders by a user"""
+    return ordercontroller.cancel_userorders(user_id)

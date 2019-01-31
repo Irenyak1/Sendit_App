@@ -7,10 +7,10 @@ from api.views import app
 class ApiTestCase(unittest.TestCase):
 
     test_new_user = {
-     "user_name": "Irynah", 
-     "email": "gal@gmail.com",
-     "password": "gilgal",
-     "role": "user"
+        "user_name": "Irynah", 
+        "email": "gal@gmail.com",
+        "password": "gilgal",
+        "role": "user"
     }
 
     def setUp(self):
@@ -26,7 +26,7 @@ class ApiTestCase(unittest.TestCase):
             self.assertEqual(data ['message'],'You are most welcome to our home page')
             self.assertEqual(data ['status'],200)
             self.assertEqual(response.status_code, 200 )
-            # self.assertIn('You are most welcome to our home page',responseJson['message'] )    
+    
     
     """Tests for user signup"""    
     def test_signup_user(self):
@@ -47,36 +47,68 @@ class ApiTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200 )
 
     def test_signup_user_without_username(self):
-        
         test_new_user = {
-        "user_name": "", 
-        "email": "gal@gmail.com",
-        "password": "gilgal",
-        "role": "user"
-    }
+            "user_name": "", 
+            "email": "gal@gmail.com",
+            "password": "gilgal",
+            "role": "user"
+        }
         with self.test_client:
             response = self.test_client.post('/api/v1/signup', json = test_new_user)
             data = json.loads(response.data)
-            self.assertEqual(data ['message'],'User name should be letters of the alphabet')
+            self.assertEqual(data ['message'], 'User name should be '
+                                               'alphabetical letters')
             self.assertEqual(data ['status'],400)
             self.assertEqual(response.status_code, 200 )
 
     def test_signup_user_without_email(self):
         
         test_new_user = {
-        "user_name": "Irenyakss", 
-        "email": "",
-        "password": "gilgal",
-        "role": "user"
-    }
+            "user_name": "Irenyakss", 
+            "email": "",
+            "password": "gilgal",
+            "role": "user"
+        }
         with self.test_client:
             response = self.test_client.post('/api/v1/signup', json = test_new_user)
             data = json.loads(response.data)
-            self.assertEqual(data['message'],'Please email is required')
-            self.assertEqual(data['status'],400)
-            self.assertEqual(response.status_code, 200 )
+            self.assertEqual(data['message'], 'Please email is required')
+            self.assertEqual(data['status'], 400)
+            self.assertEqual(response.status_code, 200)
 
+    def test_signup_user_without_password(self):
+            
+            test_new_user = {
+                "user_name": "Irenyakss", 
+                "email": "galll@gmail.com",
+                "password": "",
+                "role": "user"
+            }
+            with self.test_client:
+                response = self.test_client.post('/api/v1/signup',
+                                                 json=test_new_user)
+                data = json.loads(response.data)
+                self.assertEqual(data['message'], 'Password should be filled')
+                self.assertEqual(data['status'], 400)
+                self.assertEqual(response.status_code, 200)
 
+    def test_signup_user_without_role(self):
+            
+            test_new_user = {
+                "user_name": "Irenyakss", 
+                "email": "galll@gmail.com",
+                "password": "gilgals",
+                "role": ""
+            }
+            with self.test_client:
+                response = self.test_client.post('/api/v1/signup',
+                                                 json=test_new_user)
+                data = json.loads(response.data)
+                self.assertEqual(data['message'], 'sorry! the role should '
+                                                  'be filled as either admin '
+                                                  'or user')
+                self.assertEqual(data['status'], 400)
+                self.assertEqual(response.status_code, 200)
     
     # """Test for user login"""
 
