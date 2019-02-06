@@ -63,13 +63,13 @@ def get_a_delivery_order(order_id):
     return ordercontroller.get_a_delivery_order(order_id)
 
 
-@app.route('/api/v1/users/orders/<int:user_id>', methods=['GET'])
+@app.route('/api/v1/orders/users/<int:user_id>', methods=['GET'])
 def get_all_delivery_orders_by_a_user(user_id):
     """ Endpoint to fetch all delivery orders made by a user by user id  """
     return ordercontroller.get_all_delivery_orders_by_a_user(user_id)
 
 
-@app.route('/api/v1/users/orders/<int:order_id>/<int:user_id>',
+@app.route('/api/v1/orders/users/<int:order_id>/<int:user_id>',
            methods=['GET'])
 def get_a_delivery_order_by_a_user(order_id, user_id):
     """ Endpoint to fetch a single delivery order by a user """
@@ -82,6 +82,12 @@ def cancel_order(order_id):
     return ordercontroller.cancel_order(order_id)
 
 
+@app.route('/api/v1/orders/cancel', methods=['PUT'])
+def cancel_orders():
+    """ Endpoint to cancel all delivery orders placed"""
+    return ordercontroller.cancel_orders()
+
+
 @app.route('/api/v1/orders/users/<int:order_id>/<int:user_id>/cancel',
            methods=['PUT'])
 def cancel_an_order_by_a_user(order_id, user_id):
@@ -89,7 +95,7 @@ def cancel_an_order_by_a_user(order_id, user_id):
     return ordercontroller.cancel_user_order(order_id, user_id)
 
 
-@app.route('/api/v1/orders/users/<int:user_id>/cancel',
+@app.route('/api/v1/orders/users/<int:user_id>/cancel_all',
            methods=['PUT'])
 def cancel_all_orders_by_a_user(user_id):
     """Cancel all delivery orders by a user"""

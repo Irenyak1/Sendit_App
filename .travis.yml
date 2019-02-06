@@ -6,7 +6,12 @@ install:
   - pip install coveralls
 
 # command to run tests
-script: nosetests  --with-coverage --cover-package=api
+script: pytest
 
 after_success:
-- coveralls
+- pytest --cov
+
+# script: nosetests  --with-coverage --cover-package=api
+
+# after_success:
+# - coveralls
