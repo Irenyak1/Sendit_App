@@ -1010,22 +1010,22 @@ class ApiTestCase(unittest.TestCase):
     #         self.assertEqual(response.status_code, 200)
 
     """Tests for retrieving an order or orders"""
-    def test_get_all_orders_when_orders_list_is_empty(self):
-        with self.test_client:
-            response = self.test_client.get('/api/v1/orders')
-            data = json.loads(response.data)
-            self.assertEqual(data['message'], 'There are no delivery '
-                                              'orders yet')
-            self.assertEqual(data['status'], 400)
-            self.assertEqual(response.status_code, 200)
+    # def test_get_all_orders_when_orders_list_is_empty(self):
+    #     with self.test_client:
+    #         response = self.test_client.get('/api/v1/orders')
+    #         data = json.loads(response.data)
+    #         self.assertEqual(data['message'], 'There are no delivery '
+    #                                           'orders yet')
+    #         self.assertEqual(data['status'], 400)
+    #         self.assertEqual(response.status_code, 200)
 
-    def test_get_an_order_when_orders_list_isempty(self):
-        with self.test_client:
-            response = self.test_client.get('/api/v1/orders/1')
-            data = json.loads(response.data)
-            self.assertEqual(data['message'], 'You have no orders yet')
-            self.assertEqual(data['status'], 400)
-            self.assertEqual(response.status_code, 200)
+    # def test_get_an_order_when_orders_list_isempty(self):
+    #     with self.test_client:
+    #         response = self.test_client.get('/api/v1/orders/1')
+    #         data = json.loads(response.data)
+    #         self.assertEqual(data['message'], 'You have no orders yet')
+    #         self.assertEqual(data['status'], 400)
+    #         self.assertEqual(response.status_code, 200)
 
     def test_get_all_orders(self):
         test_create_order = {
