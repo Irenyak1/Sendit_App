@@ -1,51 +1,42 @@
-from flask import Flask, request, jsonify, make_response
 
-
-def get_index_page():
-    return "You are most welcome to our home page"
-
-""" This is a global variable called USERS """
-USERS = [{"username": "admin", "password": "admin", "role": "admin"},
-         {"username": "Maxie", "password": "elite", "role": "user"}]
+users_list = []
+""" This is a list that will store all the users """
 
 
 class User:
     """
-    This class defines the user in terms of
-    the username, password and user_role.
+    This is the user class which defines the user in terms of
+    the user_name, password and role.
     """
 
-    user_role = ""
-
-    def __init__(self, username, password, role):
-        self.username = username
+    def __init__(self, user_name, email, password, role):
+        self.user_name = user_name
+        self.email = email
         self.password = password
         self.role = role
 
-    def login(self):
-        """ This method allows the user to login after cross checking their
-            username, password and user role
-        """
-        for user in USERS:
-            if user['username'] == self.username and user['password'] == self.password and user['role'] == self.role:
-                User.user_role = self.role
-        return self.user_role
+    def to_dict(self):
+        return {
+            "user_id": len(users_list)+1,
+            "user_name": self.user_name,
+            "email": self.email,
+            "password": self.password,
+            "role": self.role
+        }
+
+orders_list = []
+""" This is a list that will store all the selivery orders made """
 
 
 class Order:
     """
     This class defines a parcel delivery order in terms of
-    user_id, user_name, contact, order_id, pickup_location, destination, weight, price.
+    user_id, user_name, contact, pickup_location,
+    destination, weight, price and status,
     """
 
-    ORDERS = []
-    """
-    This is a list that will store all the deliverry orders
-    that will be  created.
-    """
-
-    def __init__(self, user_id, user_name, contact,
-                 pickup_location, destination, weight, price):
+    def __init__(self, user_id, user_name, contact, pickup_location,
+                 destination, weight, price, status):
         self.user_id = user_id
         self.user_name = user_name
         self.contact = contact
@@ -53,32 +44,17 @@ class Order:
         self.destination = destination
         self.weight = weight
         self.price = price
-    
-    def create_a_delivery_order(self):
-        """ This method allows a user to create a delivery order.
-            And it also generates the order_id automatically.
-        """
-        if User.user_role == 'user':
-            my_orders = dict
-            if not Order.ORDERS:
-                order_id = 1
-        else:
-            order_id = Order.ORDERS[-1].get('order_id') + 1
+        self.status = status
 
-        self.my_orders = {
-            'user_id': self.user_id,
-            'user_name': self.user_name,
-            'contact': self.contact,
-            'pickup_location': self.pickup_location,
-            'destination': self.destination,
-            'weight': self.weight,
-            'price': self.price,
-            'order_id': order_id
+    def to_dict(self):
+        return {
+            "order_id": len(orders_list) + 1,
+            "user_id": self.user_id,
+            "user_name": self.user_name,
+            "contact": self.contact,
+            "pickup_location": self.pickup_location,
+            "destination": self.destination,
+            "weight": self.weight,
+            "price": self.price,
+            "status": self.status
         }
-
-        Order.ORDERS.append(self.my_orders)
-
-        return 'You have created a delivery order.'
-
-
-        

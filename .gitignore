@@ -6,6 +6,14 @@
 .mypy_cache/
 venv/
 api.__pycache__
+*__init__.pyc
+controllers.pyc
+models.pyc
+views.pyc
+test_views.pyc
+validators.pyc
+
+
 
 
 

@@ -1,12 +1,17 @@
 language: python
 python:
-  - "3.6.5"
+  - "3.5.2"
 install: 
   - pip install -r requirements.txt
   - pip install coveralls
 
 # command to run tests
-script: nosetests  --with-coverage --cover-package=api
+script: pytest
 
 after_success:
-- coveralls
+- pytest --cov
+
+# script: nosetests  --with-coverage --cover-package=api
+
+# after_success:
+# - coveralls
