@@ -107,10 +107,11 @@ class BaseTestCase(unittest.TestCase):
         )
 
     def test_index(self):
-        user_token = self.get_user_token()
+        # user_token = self.get_user_token()
         with self.test_client:
-            response = self.test_client.get('/', content_type='application/json', headers=dict(Authorization='Bearer ' + user_token))
-            data = json.loads(response.data.decode())
+            response = self.test_client.get('/')
+            # , content_type='application/json', headers=dict(Authorization='Bearer ' + user_token))
+            # data = json.loads(response.data.decode())
             self.assertEqual(data.get('message'), 'You are most welcome to '
                                                   'our home page')
             self.assertEqual(data['status'], 200)
