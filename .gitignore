@@ -11,7 +11,7 @@ controllers.pyc
 models.pyc
 views.pyc
 test_views.pyc
-validators.pyc
+# validators.pyc
 validators.pyc
 get_token.py
 assets/
