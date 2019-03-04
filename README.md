@@ -15,7 +15,7 @@ Follow the following steps to get a copy of the API to run on your machine.
 
 Install the following programs before using the API:
 ```
-1. Python version 3.5.2
+1. Python version 3.6.7
 2. Postman
 3. Any IDE of your choice
 ```
