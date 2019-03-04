@@ -2,6 +2,13 @@
 import unittest
 import json
 from api.views import app
+# import unittest
+# from flask import json
+# from api.models import User, Order
+# from api.views import app
+# # from tests.get_token import GetToken
+# from api.auth import *
+# from api.controllers import User_Controller
 
 
 class BaseTestCase(unittest.TestCase):
@@ -106,14 +113,23 @@ class BaseTestCase(unittest.TestCase):
             content_type='application/json'
         )
 
-    def test_index(self):
-        # user_token = self.get_user_token()
+    # def test_index(self):
+    #     # user_token = self.get_user_token()
+    #     with self.test_client:
+    #         response = self.test_client.get('/')
+    #         # , content_type='application/json', headers=dict(Authorization='Bearer ' + user_token))
+    #         # data = json.loads(response.data.decode())
+    #         self.assertEqual(data.get('message'), 'You are most welcome to '
+    #                                               'our home page')
+    #         self.assertEqual(data['status'], 200)
+    #         self.assertEqual(response.status_code, 200)
+    
+    def test_get_index_page(self):
         with self.test_client:
             response = self.test_client.get('/')
-            # , content_type='application/json', headers=dict(Authorization='Bearer ' + user_token))
-            # data = json.loads(response.data.decode())
-            self.assertEqual(data.get('message'), 'You are most welcome to '
-                                                  'our home page')
+            data = json.loads(response.data)
+            self.assertEqual(data['message'], 'You are most welcome to '
+                                              'our home page')
             self.assertEqual(data['status'], 200)
             self.assertEqual(response.status_code, 200)
 
@@ -277,14 +293,6 @@ class BaseTestCase(unittest.TestCase):
 
 #         """Test for fetching index page"""
 
-#     def test_get_index_page(self):
-#         with self.test_client:
-#             response = self.test_client.get('/')
-#             data = json.loads(response.data)
-#             self.assertEqual(data['message'], 'You are most welcome to '
-#                                               'our home page')
-#             self.assertEqual(data['status'], 200)
-#             self.assertEqual(response.status_code, 200)
 
 #     # def signup(self, user_name="irenyak", email="gigalasl@gmail.com",
 #     #            password="gigals", role="user"):

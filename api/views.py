@@ -11,7 +11,7 @@ ordercontroller = Order_Controller()
 
 
 @app.route('/', methods=['GET'])
-@user_token
+# @user_token
 def index():
     """ Endpoint to get the index page of the application"""
     return usercontroller.get_index_page()
