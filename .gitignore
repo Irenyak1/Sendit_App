@@ -17,6 +17,7 @@ get_token.py
 assets/
 exer.py
 report.html
+htmlcov/
 
 
 

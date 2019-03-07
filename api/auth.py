@@ -6,6 +6,7 @@ import datetime
 
 adminkey = 'access'
 userkey = 'nogo'
+# class Authentication:
 
 
 def admin_token(func):
@@ -15,9 +16,9 @@ def admin_token(func):
         try:
             admins_token = admin_headers[1]
             print(admins_token)
-            # if not admins_token:
-            #     error = jsonify({'status': 403,
-            #                      'message': 'Token is missing'})
+            if not admins_token:
+                error = jsonify({'status': 403,
+                                 'message': 'Token is missing'})
             data = jwt.decode(admins_token, "access")
             return func(*args, **kwargs)
         except IndexError:
@@ -48,9 +49,9 @@ def user_token(func):
         try:
             users_token = user_headers[1]
             print(users_token)
-            # if not users_token:
-            #     error = jsonify({'status': 403,
-            #                     'message': 'Token not provided'})
+            if not users_token:
+                error = jsonify({'status': 403,
+                                'message': 'Token not provided'})
             data = jwt.decode(users_token, "nogo")
             return func(*args, **kwargs)
         except IndexError:
@@ -65,10 +66,10 @@ def user_token(func):
             error = jsonify({'status': 401,
                              'message': 'Expired token. Please Log In again.',
                              'authenticated': False})
-        # except jwt.InvalidTokenError:
-        #     error = jsonify({'status': 401,
-        #                      'message': 'Invalid token. Please Log In again',
-        #                      'authenticated': False})
+        except jwt.InvalidTokenError:
+            error = jsonify({'status': 401,
+                             'message': 'Invalid token. Please Log In again',
+                             'authenticated': False})
         return error
 
     return _verify

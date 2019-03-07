@@ -1,5 +1,6 @@
 import re
 from flask import jsonify
+from api.models import users_list, orders_list
 
 
 class Validators:
@@ -19,10 +20,6 @@ class Validators:
                             'message': 'User name should be '
                             'alphabetical letters'})
 
-        if not user_name or user_name.strip() == "":
-            return jsonify({'status': 400,
-                            'message': 'User name should be filled'})
-
         if not user_name or len(user_name) < 5:
             return jsonify({'status': 400,
                             'message': 'Username must be a string of at '
@@ -31,6 +28,7 @@ class Validators:
         if not email or email == "":
             return jsonify({'status': 400,
                             'message': 'Please email is required'})
+
 
         if not re.match(r"([\w\.-]+)@([\w\.-]+)(\.[\w\.]+$)", email):
             return jsonify({'status': 400,
@@ -108,10 +106,10 @@ class Validators:
                             'message': 'sorry! the user id '
                             'can not be less than 1'})
 
-        if not user_name or user_name == "":
-            return jsonify({'status': 400,
-                            'message': 'Username can not be '
-                            'an empty string'})
+        # if not user_name or user_name == "":
+        #     return jsonify({'status': 400,
+        #                     'message': 'Username can not be '
+        #                     'an empty string'})
 
         if not isinstance(user_name, str):
             return jsonify({'status': 400,
@@ -207,25 +205,15 @@ class Validators:
         if not price or price < 1:
             return jsonify({'status': 400,
                             'message': 'The price can not be less than 1'})
-
-        if not status or status == "":
+        
+        if not status or status =="":
             return jsonify({'status': 400,
-                            'message': 'Fill in the status as either pending, '
-                            'delivered or canceled'})
+                            'message': 'Please fill in the status it cant not be blank'})
 
-        if not isinstance(status, str):
+        if status !='pending' and status !='delivered' and status !='cancelled':
             return jsonify({'status': 400,
-                            'message': 'The status should be a string'})
-
-        if not status.isalpha():
-            return jsonify({'status': 400,
-                            'message': 'Status should be '
-                            'alphabetical letters'})
-
-        if not status or len(status) < 4:
-            return jsonify({'status': 400,
-                            'message': 'Fill the status as a string, '
-                            'of at least 4 letters'})
+                            'message': 'Status must be a string as either, '
+                                        'pending, delivered or cancelled'})
 
     def validate_object(self, order_data, status):
         if not order_data or order_data == "":
