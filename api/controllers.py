@@ -4,6 +4,7 @@ from api.validators import Validators
 import jwt
 import datetime
 from functools import wraps
+from api.auth import *
 
 
 validators = Validators()
@@ -76,10 +77,10 @@ class User_Controller:
                                     'message': 'You have successfully logged in',
                                     'user': user,
                                     'token': users_token.decode('utf-8')})
-                else:
-                    return jsonify({'status': 400,
-                                    'message': 'Username or password did '
-                                    'not match any user'})
+        else:
+            return jsonify({'status': 400,
+                            'message': 'Username or password did '
+                            'not match any user'})
 
     def get_all_users(self):
         """

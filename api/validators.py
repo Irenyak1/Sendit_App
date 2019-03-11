@@ -43,7 +43,7 @@ class Validators:
                             'message': 'sorry! password must be at least '
                             '6 characters'})
         
-        if not role:
+        if not role or role == "":
             return jsonify({'status': 400,
                             'message': 'Role must be filled as user or admin'})
 
@@ -105,11 +105,6 @@ class Validators:
             return jsonify({'status': 400,
                             'message': 'sorry! the user id '
                             'can not be less than 1'})
-
-        # if not user_name or user_name == "":
-        #     return jsonify({'status': 400,
-        #                     'message': 'Username can not be '
-        #                     'an empty string'})
 
         if not isinstance(user_name, str):
             return jsonify({'status': 400,

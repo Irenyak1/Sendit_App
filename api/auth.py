@@ -6,8 +6,6 @@ import datetime
 
 adminkey = 'access'
 userkey = 'nogo'
-# class Authentication:
-
 
 def admin_token(func):
     @wraps(func)
