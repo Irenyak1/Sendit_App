@@ -30,16 +30,18 @@ def login():
 
 @app.route('/api/v1/users', methods=['GET'])
 def get_all_users():
-    """ Endpoint to get all users that have
-        signed up for accounts
+    """ 
+    Endpoint to get all users that have
+    signed up for accounts
     """
     return usercontroller.get_all_users()
 
 
 @app.route('/api/v1/users/<int:user_id>', methods=['GET'])
 def get_a_single_user(user_id):
-    """ Endpoint to get a single user who has
-        signed up for an account
+    """ 
+    Endpoint to get a single user who has
+    signed up for an account
     """
     return usercontroller.get_a_single_user(user_id)
 
@@ -54,8 +56,9 @@ def create_a_delivery_order():
 @app.route('/api/v1/orders', methods=['GET'])
 @admin_token
 def get_all_orders():
-    """ Endpoint for the admin to get all delivery orders
-        created by users
+    """ 
+    Endpoint for the admin to get all delivery orders
+    created by users
     """
     return ordercontroller.get_all_orders()
 

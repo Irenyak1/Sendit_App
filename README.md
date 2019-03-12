@@ -1,4 +1,6 @@
 # sendit_app
+[![Build Status](https://www.travis-ci.com/Irenyak1/sendit-app.svg?branch=master)](https://www.travis-ci.com/Irenyak1/sendit-app)
+[![Coverage Status](https://coveralls.io/repos/github/Irenyak1/sendit-app/badge.svg?branch=master)](https://coveralls.io/github/Irenyak1/sendit-app?branch=master)
 
 
 

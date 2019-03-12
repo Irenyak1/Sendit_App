@@ -17,7 +17,8 @@ class User_Controller:
                         'message': 'You are most welcome to our home page'})
 
     def signup_user(self):
-        """This method allows the user to create an account
+        """
+        This method allows the user to create an account
         """
         user_data = request.get_json()
         user_name = user_data.get('user_name')
@@ -46,8 +47,10 @@ class User_Controller:
                         'new_user': new_users})
 
     def login(self):
-        """ This method allows the user to login after cross checking their
-            user_name, password, user role and user id.
+        """ 
+        This method allows the user to login after cross checking their
+        user_name, password, user role and user id.
+
         """
         user_data = request.get_json()
         user_name = user_data.get('user_name')
@@ -95,8 +98,9 @@ class User_Controller:
             return jsonify({'status': 200, 'users_list': users_list})
 
     def get_a_single_user(self, user_id):
-        """Method to get a single user who has
-           signed up for an account
+        """
+        Method to get a single user who has
+        signed up for an account
         """
         if len(users_list) < 1:
             return jsonify({'status': 400,
@@ -112,8 +116,9 @@ class User_Controller:
 class Order_Controller:
 
     def create_a_delivery_order(self):
-        """ This method allows a user to create a delivery order.
-            And it also generates the order_id automatically.
+        """ 
+        This method allows a user to create a delivery order.
+        And it also generates the order_id automatically.
         """
 
         order_data = request.get_json()
