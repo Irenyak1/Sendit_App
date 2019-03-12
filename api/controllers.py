@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 from api.models import User, users_list, Order, orders_list
 from api.validators import Validators
+import jwt
+import datetime
+from functools import wraps
+from api.auth import *
 
 
 validators = Validators()
@@ -16,7 +20,6 @@ class User_Controller:
         """This method allows the user to create an account
         """
         user_data = request.get_json()
-        # get login data from user
         user_name = user_data.get('user_name')
         email = user_data.get('email')
         password = user_data.get('password')
@@ -28,10 +31,11 @@ class User_Controller:
             return signup_validation
 
         for user in users_list:
-            if user['user_name'] == user_name:
+            if user['user_name'] == user_name or user['email'] == email:
                 return jsonify({'status': 400,
-                               'message': 'This username is already taken '
-                                'choose another username'})
+                               'message': 'This username or email already taken '
+                                'choose another username or email'})
+            
         new_user = User(user_name, email, password, role)
         new_users = new_user.to_dict()
 
@@ -56,9 +60,23 @@ class User_Controller:
 
         for user in users_list:
             if user['user_name'] == user_name and user['password'] == password:
-                return jsonify({'status': 200,
-                                'message': 'You have successfully logged in',
-                                'user': user})
+                if user['user_name'] == 'admin' and user['password'] == 'admin123':
+                    admins_token = jwt.encode({'user_name': user_data['user_name'],
+                                            'exp': datetime.datetime.utcnow() +
+                                            datetime.timedelta(minutes=30)}, 'access')
+                    return jsonify({'status': 200,
+                                    'message': 'Welcome admin',
+                                    'user': user,
+                                    'token': admins_token.decode('utf-8')})
+
+                if user['user_name'] != 'admin' and user['password'] != 'admin123': 
+                    users_token = jwt.encode({'user_name': user_data['user_name'],
+                                            'exp': datetime.datetime.utcnow() +
+                                            datetime.timedelta(minutes=30)}, 'nogo')
+                    return jsonify({'status': 200,
+                                    'message': 'You have successfully logged in',
+                                    'user': user,
+                                    'token': users_token.decode('utf-8')})
         else:
             return jsonify({'status': 400,
                             'message': 'Username or password did '
@@ -145,7 +163,7 @@ class Order_Controller:
 
     def get_a_delivery_order(self, order_id):
         """ Method to fetch a single delivery order using order id """
-        
+
         if len(orders_list) < 1:
             return jsonify({'status': 400,
                             'message': 'You have no orders yet'})
@@ -159,19 +177,24 @@ class Order_Controller:
                         'message': 'There is no such delivery '
                         'order in the list'})
 
-    # def get_all_delivery_orders_by_a_user(self, user_id):
-    #     """ Method to fetch all delivery orders made by a user """
-    #     if len(orders_list) < 1:
-    #         return jsonify({'status': 400,
-    #                         'message': 'There are no orders placed yet'})
+    def get_all_delivery_orders_by_a_user(self, user_id):
+        """ Method to fetch all delivery orders made by a specific user """
+        my_orders = []
 
-    #     for order in orders_list:
-    #         if order['user_id'] == user_id:
-    #             return jsonify({'status': 200,
-    #                             'order': order})
+        if len(orders_list) < 1:
+            return jsonify({'status': 400,
+                            'message': 'There are no orders placed yet'})
 
-    #     return jsonify({'status': 400,
-    #                     'message': 'The user has no orders yet.'})
+        for order in orders_list:
+            if order['user_id'] == user_id:
+                my_orders.append(order)
+        if my_orders:
+            return jsonify({'status':200, 
+                            'number of orders placed':len(my_orders),
+                            'my_orders':my_orders}) 
+
+        return jsonify({'status': 400,
+                        'message': 'The user has no orders yet or the user does not exist'})
 
     def get_a_delivery_order_by_a_user(self, order_id, user_id):
         """ Method to fetch a single delivery order by a user """
@@ -186,7 +209,8 @@ class Order_Controller:
                                 'order': order})
 
         return jsonify({'status': 400,
-                        'message': 'Such order in not found in the list.'})
+                        'message': 'The user has no such order '
+                        'or the user does not exist in the list'})
 
     def cancel_order(self, order_id):
         """Method to cancel a delivery order by order id"""
@@ -194,54 +218,33 @@ class Order_Controller:
         order_data = request.get_json()
         status = order_data.get('status')
 
-        cancel_order_validation = validators.validate_cancel_order(order_data,
-                                                                   status)
+        cancel_order_validation = validators.validate_object(order_data,
+                                                             status)
         if cancel_order_validation:
             return cancel_order_validation
 
+        if len(orders_list) < 1:
+            return jsonify({'status': 400,
+                            'message': 'There are no orders in the list yet'})
+
         for an_order in orders_list:
-            if an_order['order_id'] == order_id:
+            if an_order['order_id'] == order_id and an_order["status"] == "pending":
                 an_order["status"] = status
                 return jsonify({'status': 200,
                                 'order': an_order,
                                 'message': 'Delivery order has '
-                                'been canceled'})
+                                'been cancelled'})
 
         return jsonify({'status': 400,
                         'message': 'The order has not been found'})
-
-    # def cancel_orders(self):
-    #     """Method to cancel all delivery orders"""
-
-    #     order_data = request.get_json()
-    #     status = order_data.get('status')
-
-    #     cancel_orders_valid = validators.validate_cancel_orders(order_data,
-    #                                                             status)
-    #     if cancel_orders_valid:
-    #         return cancel_orders_valid
-
-    #     if len(orders_list) < 1:
-    #         return jsonify({'status': 400,
-    #                         'message': 'No delivery orders to cancel'})
-
-    #     for orders in orders_list:
-    #             orders["status"] = status
-    #             return jsonify({'status': 200,
-    #                             'order': orders,
-    #                             'message': 'All orders have '
-    #                             'been canceled'})
-
-    #     return jsonify({'status': 400,
-    #                     'message': 'The orders can not be canceled'})
 
     def cancel_user_order(self, order_id, user_id):
         """Method to cancel a delivery order created by a particular user"""
         order_data = request.get_json()
         status = order_data.get('status')
 
-        cancel_userorder_valid = validators.valid_cancel_user_order(order_data,
-                                                                    status)
+        cancel_userorder_valid = validators.validate_object(order_data,
+                                                            status)
         if cancel_userorder_valid:
             return cancel_userorder_valid
 
@@ -250,39 +253,74 @@ class Order_Controller:
                             'message': 'No delivery orders to cancel'})
 
         for order in orders_list:
-            if order['order_id'] == order_id and order['user_id'] == user_id:
+            if order['order_id'] == order_id and order['user_id'] == user_id and order["status"] == "pending":
                 order["status"] = status
                 return jsonify({'status': 200,
                                 'order': order,
-                                'message': 'Delivery order by the user '
-                                'has been canceled'})
+                                'message': 'Pending order by the user '
+                                'has been cancelled'})
 
         return jsonify({'status': 400,
-                        'message': 'Such order is not found '
-                        'in the orders list'})
+                        'message': 'The order is not found '
+                        'in the orders list or the user does not exist'})
 
-    # def cancel_userorders(self, user_id):
-    #     """Method to cancel all delivery orders created by a user"""
-    #     order_data = request.get_json()
-    #     status = order_data.get('status')
+    def cancel_userorders(self, user_id):
+        """Method to cancel all delivery orders created by a user"""
+        my_cancelled_orders = []
 
-    #     cancel_userorders_val = validators.valid_cancel_userorders(order_data,
-    #                                                                status)
+        order_data = request.get_json()
+        status = order_data.get('status')
 
-    #     if cancel_userorders_val:
-    #         return cancel_userorders_val
+        cancel_userorders_val = validators.validate_object(order_data,
+                                                           status)
 
-    #     if len(orders_list) < 1:
-    #         return jsonify({'status': 400,
-    #                         'message': 'No delivery orders to cancel'})
+        if cancel_userorders_val:
+            return cancel_userorders_val
 
-    #     for order in orders_list:
-    #         if order['user_id'] == user_id:
-    #             order["status"] = status
-    #             return jsonify({'status': 200,
-    #                             'order': order,
-    #                             'message': 'All delivery orders by the user '
-    #                             'have been canceled'})
+        if len(orders_list) < 1:
+            return jsonify({'status': 400,
+                            'message': 'No orders to cancel'})
 
-    #     return jsonify({'status': 400,
-    #                     'message': 'User has no orders yet'})
+        for order in orders_list:
+            if order['user_id'] == user_id and order["status"] == "pending":
+                order["status"] = status
+                my_cancelled_orders.append(order)
+        if my_cancelled_orders:
+                return jsonify({'status': 200,
+                                'number of cancelled orders':len(my_cancelled_orders),
+                                'my_cancelled_orders': my_cancelled_orders,
+                                'message': 'All pending orders by the user '
+                                'have been cancelled'})
+
+        return jsonify({'status': 400,
+                        'message': 'User has no orders yet or user does not exist'})
+        
+    def cancel_orders(self):
+        """Method to cancel all delivery orders"""
+        all_cancelled_orders = []
+
+        order_data = request.get_json()
+        status = order_data.get('status')
+
+        cancel_orders_valid = validators.validate_object(order_data,
+                                                         status)
+        if cancel_orders_valid:
+            return cancel_orders_valid
+
+        if len(orders_list) < 1:
+            return jsonify({'status': 400,
+                            'message': 'There are no delivery orders to cancel'})
+
+        for any_order in orders_list:
+            if any_order["status"] == "pending":
+               any_order["status"] = status
+               all_cancelled_orders.append(any_order)
+        if all_cancelled_orders:
+                return jsonify({'status': 200,
+                                'Orders cancelled':len(all_cancelled_orders),
+                                'all_cancelled_orders': all_cancelled_orders,
+                                'message': 'All pending orders have '
+                                'been cancelled'})
+
+        return jsonify({'status': 400,
+                        'message': 'The orders can not be cancelled'})
