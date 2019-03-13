@@ -1,7 +1,7 @@
 # sendit_app
 [![Build Status](https://www.travis-ci.com/Irenyak1/sendit-app.svg?branch=challenge_2)](https://www.travis-ci.com/Irenyak1/sendit-app)
-[![Coverage Status](https://coveralls.io/repos/github/Irenyak1/sendit-app/badge.svg)](https://coveralls.io/github/Irenyak1/sendit-app)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c4b899b926f66724b028/maintainability)](https://codeclimate.com/github/Irenyak1/sendit-app/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/Irenyak1/sendit-app/badge.svg?branch=ft-%23161808742-create-order)](https://coveralls.io/github/Irenyak1/sendit-app?branch=ft-%23161808742-create-order)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f5c1014e426d4a30b5e8e1bd0d5c3a19)](https://www.codacy.com/app/Irenyak1/sendit-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Irenyak1/sendit-app&amp;utm_campaign=Badge_Grade)
 
 
