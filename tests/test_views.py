@@ -105,8 +105,8 @@ class BaseTestCase(unittest.TestCase):
         Returns admin token
         """
         response = self.login_admin(user_name, password)
-        data = json.loads(response.data)
-        return data['token']
+        token = json.loads(response.data.decode())['token']
+        return token
 
     def get_user_token(self, user_name="irenyak", password="gigals"):
         """
@@ -158,7 +158,7 @@ class BaseTestCase(unittest.TestCase):
     def test_get_index_page(self):
         """ Tests the api to return the index page"""
         with self.test_client:
-            response = self.test_client.get('/')
+            response = self.test_client.get('/api/v1/')
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'You are most welcome to '
                                               'our home page')
@@ -1351,7 +1351,7 @@ class BaseTestCase(unittest.TestCase):
         with self.test_client:
             """Test this without token"""
             response = self.test_client.get('/api/v1/orders/1')
-            data = json.loads(response.data)
+            data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Please provide Token')
             self.assertEqual(data['status'], 401)
             self.assertEqual(response.status_code, 200)
@@ -1415,7 +1415,7 @@ class BaseTestCase(unittest.TestCase):
         with self.test_client:
             """Test this without token"""
             response = self.test_client.get('/api/v1/orders/100')
-            data = json.loads(response.data)
+            data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Please provide Token')
             self.assertEqual(data['status'], 401)
             self.assertEqual(response.status_code, 200)
@@ -1440,7 +1440,7 @@ class BaseTestCase(unittest.TestCase):
         with self.test_client:
             """Test this without token"""
             response = self.test_client.get('/api/v1/orders/users/1/1')
-            data = json.loads(response.data)
+            data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Provide Token')
             self.assertEqual(data['status'], 401)
             self.assertEqual(response.status_code, 200)
@@ -1500,65 +1500,6 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(data['message'], 'The order has not been found')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
-
-    def test_cancel_all_orders(self):
-        """Tests api to cancel all pending orders"""
-        test_order = {
-            "user_id": 1,
-            "user_name": "irenyak",
-            "contact": 234545678,
-            "pickup_location": "gulu",
-            "destination": "",
-            "weight": 10,
-            "price": 20000,
-            "status": "Delivered"
-
-        }
-        with self.test_client:
-            """Test this without token"""
-            response = self.test_client.put('/api/v1/orders/cancel',
-                                            json={'status': 'cancelled'})
-            data = json.loads(response.data.decode())
-            self.assertEqual(data['message'], "Please provide Token")
-            self.assertEqual(data['status'], 401)
-            self.assertEqual(response.status_code, 200)
-            """ Test cancel all orders when order list is empty with token"""
-            response = self.test_client.put('/api/v1/orders/cancel',
-                                            json={'status': 'cancelled'},
-                                             headers=dict(Authorization='Bearer ' + self.get_admin_token()))
-            data = json.loads(response.data.decode())
-            self.assertEqual(data['message'], 'There are no delivery orders to cancel')
-            self.assertEqual(data['status'], 400)
-            self.assertEqual(response.status_code, 200)
-            # """Test cancel all orders with token"""
-            # response = self.test_client.post('/api/v1/orders',
-            #                                  json=self.test_create_order,
-            #                                  headers=dict(Authorization='Bearer ' + self.get_user_token()))
-            # data = json.loads(response.data.decode())
-            # self.assertEqual(200, response.status_code)
-            # self.assertEqual(data['status'], 201)
-            # response = self.test_client.put('/api/v1/orders/cancel',
-            #                                 json={'status': 'cancelled'}, 
-            #                                  headers=dict(Authorization='Bearer ' + self.get_admin_token()))
-            # data = json.loads(response.data.decode())
-            # self.assertEqual(data['message'], 'All pending orders have '
-            #                                   'been cancelled')
-            # self.assertEqual(data['status'], 200)
-            # self.assertEqual(response.status_code, 200)
-            # """ Test cancel orders which are not pending with token"""
-            # response = self.test_client.post('/api/v1/orders',
-            #                                  json=test_order,
-            #                                  headers=dict(Authorization='Bearer ' + self.get_user_token()))
-            # data = json.loads(response.data.decode())
-            # self.assertEqual(200, response.status_code)
-            # self.assertEqual(data['status'], 201)
-            # response = self.test_client.put('/api/v1/orders/cancel',
-            #                                 json={'status': 'cancelled'},
-            #                                  headers=dict(Authorization='Bearer ' + self.get_admin_token()))
-            # data = json.loads(response.data.decode())
-            # self.assertEqual(data['message'], 'The orders can not be cancelled')
-            # self.assertEqual(data['status'], 400)
-            # self.assertEqual(response.status_code, 200)
 
     def test_cancel_an_order_by_a_user(self):
         """Tests api to cancel a pending order by a specific user"""
@@ -1652,6 +1593,65 @@ class BaseTestCase(unittest.TestCase):
     #         self.assertEqual(data['message'], 'User has no orders yet or user does not exist')
     #         self.assertEqual(data['status'], 400)
     #         self.assertEqual(response.status_code, 200)
+
+    def test_cancel_all_orders(self):
+        """Tests api to cancel all pending orders"""
+        test_order = {
+            "user_id": 1,
+            "user_name": "irenyak",
+            "contact": 234545678,
+            "pickup_location": "gulu",
+            "destination": "",
+            "weight": 10,
+            "price": 20000,
+            "status": "Delivered"
+
+        }
+        with self.test_client:
+            """Test this without token"""
+            response = self.test_client.put('/api/v1/orders/cancel',
+                                            json={'status': 'cancelled'})
+            data = json.loads(response.data.decode())
+            self.assertEqual(data['message'], "Please provide Token")
+            self.assertEqual(data['status'], 401)
+            self.assertEqual(response.status_code, 200)
+            """ Test cancel all orders when order list is empty with token"""
+            response = self.test_client.put('/api/v1/orders/cancel',
+                                            json={'status': 'cancelled'},
+                                             headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+            data = json.loads(response.data.decode())
+            self.assertEqual(data['message'], 'There are no delivery orders to cancel')
+            self.assertEqual(data['status'], 400)
+            self.assertEqual(response.status_code, 200)
+            # """Test cancel all orders with token"""
+            # response = self.test_client.post('/api/v1/orders',
+            #                                  json=self.test_create_order,
+            #                                  headers=dict(Authorization='Bearer ' + self.get_user_token()))
+            # data = json.loads(response.data.decode())
+            # self.assertEqual(200, response.status_code)
+            # self.assertEqual(data['status'], 201)
+            # response = self.test_client.put('/api/v1/orders/cancel',
+            #                                 json={'status': 'cancelled'}, 
+            #                                  headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+            # data = json.loads(response.data.decode())
+            # self.assertEqual(data['message'], 'All pending orders have '
+            #                                   'been cancelled')
+            # self.assertEqual(data['status'], 200)
+            # self.assertEqual(response.status_code, 200)
+            # """ Test cancel orders which are not pending with token"""
+            # response = self.test_client.post('/api/v1/orders',
+            #                                  json=test_order,
+            #                                  headers=dict(Authorization='Bearer ' + self.get_user_token()))
+            # data = json.loads(response.data.decode())
+            # self.assertEqual(200, response.status_code)
+            # self.assertEqual(data['status'], 201)
+            # response = self.test_client.put('/api/v1/orders/cancel',
+            #                                 json={'status': 'cancelled'},
+            #                                  headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+            # data = json.loads(response.data.decode())
+            # self.assertEqual(data['message'], 'The orders can not be cancelled')
+            # self.assertEqual(data['status'], 400)
+            # self.assertEqual(response.status_code, 200)
 
     def tearDown(self):
         pass
