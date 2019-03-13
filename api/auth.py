@@ -2,10 +2,11 @@ from functools import wraps
 from flask import request, jsonify
 import jwt
 import datetime
-
+import json
 
 adminkey = 'access'
 userkey = 'nogo'
+
 
 def admin_token(func):
     @wraps(func)
@@ -21,12 +22,12 @@ def admin_token(func):
             return func(*args, **kwargs)
         except IndexError:
             error = jsonify({'status': 401,
-                             "message": "Please provide Token",
-                             "authenticated": False})
+                             'message': 'Please provide Token',
+                             'authenticated': False})
         except jwt.DecodeError:
             error = jsonify({'status': 401,
-                             "message": "Token Decode Failed!",
-                            "authenticated": False})
+                             'message': 'Token Decode Failed!',
+                             'authenticated': False})
         except jwt.ExpiredSignatureError:
             error = jsonify({'status': 401,
                              'message': 'Expired token. Please Log In again.',
@@ -49,7 +50,7 @@ def user_token(func):
             print(users_token)
             if not users_token:
                 error = jsonify({'status': 403,
-                                'message': 'Token not provided'})
+                                 'message': 'Token not provided'})
             data = jwt.decode(users_token, "nogo")
             return func(*args, **kwargs)
         except IndexError:

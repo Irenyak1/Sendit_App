@@ -4,7 +4,6 @@ from api.validators import Validators
 import jwt
 import datetime
 from functools import wraps
-from api.auth import *
 
 
 validators = Validators()
@@ -12,11 +11,13 @@ validators = Validators()
 
 class User_Controller:
 
-    def get_index_page(self):
+    @staticmethod
+    def get_index_page():
         return jsonify({'status': 200,
                         'message': 'You are most welcome to our home page'})
 
-    def signup_user(self):
+    @staticmethod
+    def signup_user():
         """
         This method allows the user to create an account
         """
@@ -34,9 +35,9 @@ class User_Controller:
         for user in users_list:
             if user['user_name'] == user_name or user['email'] == email:
                 return jsonify({'status': 400,
-                               'message': 'This username or email already taken '
-                                'choose another username or email'})
-            
+                                'message': 'This username or email already '
+                                'taken choose another username or email'})
+
         new_user = User(user_name, email, password, role)
         new_users = new_user.to_dict()
 
@@ -46,8 +47,9 @@ class User_Controller:
                         'message': 'Thank you for signing up',
                         'new_user': new_users})
 
-    def login(self):
-        """ 
+    @staticmethod
+    def login():
+        """
         This method allows the user to login after cross checking their
         user_name, password, user role and user id.
 
@@ -65,19 +67,20 @@ class User_Controller:
             if user['user_name'] == user_name and user['password'] == password:
                 if user['user_name'] == 'admin' and user['password'] == 'admin123':
                     admins_token = jwt.encode({'user_name': user_data['user_name'],
-                                            'exp': datetime.datetime.utcnow() +
-                                            datetime.timedelta(minutes=30)}, 'access')
+                                               'exp': datetime.datetime.utcnow() +
+                                               datetime.timedelta(minutes=30)}, 'access')
                     return jsonify({'status': 200,
                                     'message': 'Welcome admin',
                                     'user': user,
                                     'token': admins_token.decode('utf-8')})
 
-                if user['user_name'] != 'admin' and user['password'] != 'admin123': 
+                if user['user_name'] != 'admin' and user['password'] != 'admin123':
                     users_token = jwt.encode({'user_name': user_data['user_name'],
-                                            'exp': datetime.datetime.utcnow() +
-                                            datetime.timedelta(minutes=30)}, 'nogo')
+                                              'exp': datetime.datetime.utcnow() +
+                                              datetime.timedelta(minutes=30)}, 'nogo')
                     return jsonify({'status': 200,
-                                    'message': 'You have successfully logged in',
+                                    'message': 'You have successfully '
+                                               'logged in',
                                     'user': user,
                                     'token': users_token.decode('utf-8')})
         else:
@@ -85,7 +88,8 @@ class User_Controller:
                             'message': 'Username or password did '
                             'not match any user'})
 
-    def get_all_users(self):
+    @staticmethod
+    def get_all_users():
         """
         Method to get all users that have
         signed up for accounts
@@ -97,7 +101,8 @@ class User_Controller:
         else:
             return jsonify({'status': 200, 'users_list': users_list})
 
-    def get_a_single_user(self, user_id):
+    @staticmethod
+    def get_a_single_user(user_id):
         """
         Method to get a single user who has
         signed up for an account
@@ -115,8 +120,9 @@ class User_Controller:
 
 class Order_Controller:
 
-    def create_a_delivery_order(self):
-        """ 
+    @staticmethod
+    def create_a_delivery_order():
+        """
         This method allows a user to create a delivery order.
         And it also generates the order_id automatically.
         """
@@ -152,7 +158,8 @@ class Order_Controller:
                         'message': 'Delivery order created!',
                         'new_order': new_order})
 
-    def get_all_orders(self):
+    @staticmethod
+    def get_all_orders():
         """
         Method to get all delivery orders
         created by user
@@ -166,7 +173,8 @@ class Order_Controller:
             return jsonify({'status': 200,
                             'orders_list': orders_list})
 
-    def get_a_delivery_order(self, order_id):
+    @staticmethod
+    def get_a_delivery_order(order_id):
         """ Method to fetch a single delivery order using order id """
 
         if len(orders_list) < 1:
@@ -182,7 +190,8 @@ class Order_Controller:
                         'message': 'There is no such delivery '
                         'order in the list'})
 
-    def get_all_delivery_orders_by_a_user(self, user_id):
+    @staticmethod
+    def get_all_delivery_orders_by_a_user(user_id):
         """ Method to fetch all delivery orders made by a specific user """
         my_orders = []
 
@@ -194,14 +203,16 @@ class Order_Controller:
             if order['user_id'] == user_id:
                 my_orders.append(order)
         if my_orders:
-            return jsonify({'status':200, 
-                            'number of orders placed':len(my_orders),
-                            'my_orders':my_orders}) 
+            return jsonify({'status': 200,
+                            'number of orders placed': len(my_orders),
+                            'my_orders': my_orders})
 
         return jsonify({'status': 400,
-                        'message': 'The user has no orders yet or the user does not exist'})
+                        'message': 'The user has no orders yet or the '
+                        'user does not exist'})
 
-    def get_a_delivery_order_by_a_user(self, order_id, user_id):
+    @staticmethod
+    def get_a_delivery_order_by_a_user(order_id, user_id):
         """ Method to fetch a single delivery order by a user """
 
         if len(orders_list) < 1:
@@ -217,7 +228,8 @@ class Order_Controller:
                         'message': 'The user has no such order '
                         'or the user does not exist in the list'})
 
-    def cancel_order(self, order_id):
+    @staticmethod
+    def cancel_order(order_id):
         """Method to cancel a delivery order by order id"""
 
         order_data = request.get_json()
@@ -233,17 +245,19 @@ class Order_Controller:
                             'message': 'There are no orders in the list yet'})
 
         for an_order in orders_list:
-            if an_order['order_id'] == order_id and an_order["status"] == "pending":
-                an_order["status"] = status
-                return jsonify({'status': 200,
-                                'order': an_order,
-                                'message': 'Delivery order has '
-                                'been cancelled'})
+            if an_order['order_id'] == order_id:
+                if an_order["status"] == "pending":
+                    an_order["status"] = status
+                    return jsonify({'status': 200,
+                                    'order': an_order,
+                                    'message': 'Delivery order has '
+                                    'been cancelled'})
 
         return jsonify({'status': 400,
                         'message': 'The order has not been found'})
 
-    def cancel_user_order(self, order_id, user_id):
+    @staticmethod
+    def cancel_user_order(order_id, user_id):
         """Method to cancel a delivery order created by a particular user"""
         order_data = request.get_json()
         status = order_data.get('status')
@@ -258,18 +272,20 @@ class Order_Controller:
                             'message': 'No delivery orders to cancel'})
 
         for order in orders_list:
-            if order['order_id'] == order_id and order['user_id'] == user_id and order["status"] == "pending":
-                order["status"] = status
-                return jsonify({'status': 200,
-                                'order': order,
-                                'message': 'Pending order by the user '
-                                'has been cancelled'})
+            if order['order_id'] == order_id and order['user_id'] == user_id:
+                if order["status"] == "pending":
+                    order["status"] = status
+                    return jsonify({'status': 200,
+                                    'order': order,
+                                    'message': 'Pending order by the user '
+                                    'has been cancelled'})
 
         return jsonify({'status': 400,
                         'message': 'The order is not found '
                         'in the orders list or the user does not exist'})
 
-    def cancel_userorders(self, user_id):
+    @staticmethod
+    def cancel_userorders(user_id):
         """Method to cancel all delivery orders created by a user"""
         my_cancelled_orders = []
 
@@ -292,15 +308,18 @@ class Order_Controller:
                 my_cancelled_orders.append(order)
         if my_cancelled_orders:
                 return jsonify({'status': 200,
-                                'number of cancelled orders':len(my_cancelled_orders),
+                                'number of cancelled '
+                                'orders': len(my_cancelled_orders),
                                 'my_cancelled_orders': my_cancelled_orders,
                                 'message': 'All pending orders by the user '
                                 'have been cancelled'})
 
         return jsonify({'status': 400,
-                        'message': 'User has no orders yet or user does not exist'})
-        
-    def cancel_orders(self):
+                        'message': 'User has no orders to cancel or user '
+                        'does not exist'})
+
+    @staticmethod
+    def cancel_orders():
         """Method to cancel all delivery orders"""
         all_cancelled_orders = []
 
@@ -314,15 +333,16 @@ class Order_Controller:
 
         if len(orders_list) < 1:
             return jsonify({'status': 400,
-                            'message': 'There are no delivery orders to cancel'})
+                            'message': 'There are no delivery '
+                            'orders to cancel'})
 
         for any_order in orders_list:
             if any_order["status"] == "pending":
-               any_order["status"] = status
-               all_cancelled_orders.append(any_order)
+                any_order["status"] = status
+                all_cancelled_orders.append(any_order)
         if all_cancelled_orders:
                 return jsonify({'status': 200,
-                                'Orders cancelled':len(all_cancelled_orders),
+                                'Orders cancelled': len(all_cancelled_orders),
                                 'all_cancelled_orders': all_cancelled_orders,
                                 'message': 'All pending orders have '
                                 'been cancelled'})

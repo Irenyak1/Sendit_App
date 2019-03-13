@@ -5,7 +5,8 @@ from api.models import users_list, orders_list
 
 class Validators:
 
-    def validate_signup(self, user_data, user_name, email, password, role):
+    @staticmethod
+    def validate_signup(user_data, user_name, email, password, role):
 
         if not user_data or user_data == "":
             return jsonify({'status': 400,
@@ -29,7 +30,6 @@ class Validators:
             return jsonify({'status': 400,
                             'message': 'Please email is required'})
 
-
         if not re.match(r"([\w\.-]+)@([\w\.-]+)(\.[\w\.]+$)", email):
             return jsonify({'status': 400,
                             'message': 'Please enter a valid email'}), 400
@@ -42,7 +42,7 @@ class Validators:
             return jsonify({'status': 400,
                             'message': 'sorry! password must be at least '
                             '6 characters'})
-        
+
         if not role or role == "":
             return jsonify({'status': 400,
                             'message': 'Role must be filled as user or admin'})
@@ -51,7 +51,8 @@ class Validators:
             return jsonify({'status': 400,
                             'message': 'Role must be either user or admin'})
 
-    def validate_login(self, user_data, user_name, password):
+    @staticmethod
+    def validate_login(user_data, user_name, password):
 
         if not user_data or user_data == "":
             return jsonify({'status': 400,
@@ -84,7 +85,8 @@ class Validators:
                             'message': 'Password must be of '
                             'at least 6 characters'})
 
-    def validate_create_order(self, order_data, user_id, user_name, contact,
+    @staticmethod
+    def validate_create_order(order_data, user_id, user_name, contact,
                               pickup_location, destination, weight,
                               price, status):
         if not order_data or order_data == "":
@@ -200,17 +202,20 @@ class Validators:
         if not price or price < 1:
             return jsonify({'status': 400,
                             'message': 'The price can not be less than 1'})
-        
-        if not status or status =="":
-            return jsonify({'status': 400,
-                            'message': 'Please fill in the status it cant not be blank'})
 
-        if status !='pending' and status !='delivered' and status !='cancelled':
+        if not status or status == "":
             return jsonify({'status': 400,
-                            'message': 'Status must be a string as either, '
-                                        'pending, delivered or cancelled'})
+                            'message': 'Please fill in the status it '
+                            'can not be blank'})
 
-    def validate_object(self, order_data, status):
+        if status != 'pending' and status != 'delivered' and status != 'cancelled':
+            return jsonify({'status': 400,
+                            'message': 'Status must be a string as '
+                                       'either pending, delivered '
+                                       'or cancelled'})
+
+    @staticmethod
+    def validate_object(order_data, status):
         if not order_data or order_data == "":
             return jsonify({'status': 400,
                             'message': 'Please fill all the required feilds'})

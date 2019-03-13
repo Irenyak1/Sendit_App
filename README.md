@@ -1,6 +1,8 @@
 # sendit_app
-[![Build Status](https://www.travis-ci.com/Irenyak1/sendit-app.svg?branch=master)](https://www.travis-ci.com/Irenyak1/sendit-app)
-[![Coverage Status](https://coveralls.io/repos/github/Irenyak1/sendit-app/badge.svg?branch=master)](https://coveralls.io/github/Irenyak1/sendit-app?branch=master)
+[![Build Status](https://www.travis-ci.com/Irenyak1/sendit-app.svg?branch=challenge_2)](https://www.travis-ci.com/Irenyak1/sendit-app)
+[![Coverage Status](https://coveralls.io/repos/github/Irenyak1/sendit-app/badge.svg)](https://coveralls.io/github/Irenyak1/sendit-app)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c4b899b926f66724b028/maintainability)](https://codeclimate.com/github/Irenyak1/sendit-app/maintainability)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f5c1014e426d4a30b5e8e1bd0d5c3a19)](https://www.codacy.com/app/Irenyak1/sendit-app?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Irenyak1/sendit-app&amp;utm_campaign=Badge_Grade)
 
 
 
@@ -35,7 +37,7 @@ Run the command below to install it.
 - `venv/Scripts/activate` to activate your virtual environment on windows.
 - `venv/Scripts/deactivate` to deactivate your virtual environment on windows.
 
-### Install the required packages using:
+### Install the required packages using
 After you have set up and activated virtual environment, it's time now to install all the packages that the project requires.
 ```
 pip install -r requirements.txt

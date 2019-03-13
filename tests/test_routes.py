@@ -1,7 +1,7 @@
 
 import unittest
 import json
-from api.views import app
+from api.routes import app
 # import unittest
 # from flask import json
 # from api.models import User, Order
@@ -12,9 +12,10 @@ from api.views import app
 
 
 class BaseTestCase(unittest.TestCase):
-    """Base class for carrying out all tests. 
-    It defines a common `setUp' 
-    method that defines the test client used 
+    """
+    Base class for carrying out all tests.
+    It defines a common 'setUp'
+    method that defines the test client used
     in the various tests of the application.
     """
     test_create_order = {
@@ -33,7 +34,7 @@ class BaseTestCase(unittest.TestCase):
         self.test_client = app.test_client()
 
     def signup(self, user_name="irenyak", email="gigalasl@gmail.com",
-                password="gigals", role="user"):
+               password="gigals", role="user"):
 
         """
         Method for signing up a user with dummy data
@@ -83,10 +84,10 @@ class BaseTestCase(unittest.TestCase):
             ),
             content_type='application/json'
         )
-    
+
     def login_admin(self, user_name, password):
         """
-        Method for logging in an admin 
+        Method for logging in an admin
         """
         self.signup_admin()
         return self.test_client.post(
@@ -115,7 +116,6 @@ class BaseTestCase(unittest.TestCase):
         response = self.login_user(user_name, password)
         token = json.loads(response.data.decode())['token']
         return token
-    
 
     def create_order(self, user_id=1, user_name="mexien", contact=12345678,
                      pickup_location="Citysquare", destination="Gayaza",
@@ -139,9 +139,9 @@ class BaseTestCase(unittest.TestCase):
             ),
             content_type='application/json'
         )
-    
+
     def cancel_an_order(self, status="cancelled"):
-        
+
         """
         Method for cancelling a delivery order with dummy data
         """
@@ -164,7 +164,7 @@ class BaseTestCase(unittest.TestCase):
                                               'our home page')
             self.assertEqual(data['status'], 200)
             self.assertEqual(response.status_code, 200)
-    
+
     # """Tests for retrieving user or users"""
     # def test_get_all_users_when_userslist_is_empty(self):
     #   """ Tests the api to return all users when there are no users"""
@@ -189,12 +189,13 @@ class BaseTestCase(unittest.TestCase):
     def test_signup(self):
         """ Tests the api to signup a user"""
         with self.test_client:
-            response = self.signup("mexien", "mexien@gmail.com", "gooose", "user")
+            response = self.signup("mexien", "mexien@gmail.com",
+                                   "gooose", "user")
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Thank you for signing up')
             self.assertEqual(data['status'], 201)
             self.assertEqual(response.status_code, 200)
-    
+
     def test_signup_user_without_user_data(self):
         """ Tests the api to signup a user without user data"""
         test_new_user = {}
@@ -205,7 +206,6 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(data['message'], 'Please fill all the feilds')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
-
 
     def test_signup_user_with_username_not_a_string(self):
         """ Tests the api to signup a user with user name not a string"""
@@ -241,7 +241,10 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_signup_user_with_username_length_lessthan_five(self):
-        """ Tests the api to signup a user with username length less than five"""
+        """
+        Tests the api to signup a user with username
+        length less than five
+        """
         test_new_user = {
             "user_name": "iren",
             "email": "gigalasl@gmail.com",
@@ -299,14 +302,17 @@ class BaseTestCase(unittest.TestCase):
         }
         with self.test_client:
             response = self.test_client.post('/api/v1/auth/signup',
-                                                json=test_new_user)
+                                             json=test_new_user)
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Password should be filled')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
 
     def test_signup_user_with_length_of_password_lessthan_six(self):
-        """ Tests the api to signup a user with password length less than six"""
+        """
+        Tests the api to signup a user with password
+        length less than six
+        """
         test_new_user = {
             "user_name": "jungles",
             "email": "jungles@gmail.com",
@@ -315,10 +321,10 @@ class BaseTestCase(unittest.TestCase):
         }
         with self.test_client:
             response = self.test_client.post('/api/v1/auth/signup',
-                                                json=test_new_user)
+                                             json=test_new_user)
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'sorry! password must be '
-                                                'at least 6 characters')
+                                              'at least 6 characters')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
 
@@ -332,15 +338,18 @@ class BaseTestCase(unittest.TestCase):
         }
         with self.test_client:
             response = self.test_client.post('/api/v1/auth/signup',
-                                                json=test_new_user)
+                                             json=test_new_user)
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Role must be filled as '
-                                                'user or admin')
+                                              'user or admin')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
 
     def test_signup_with_role_not_admin_or_user(self):
-        """ Tests the api to signup a user with role other than admin or user"""
+        """
+        Tests the api to signup a user with role
+        other than admin or user
+        """
         test_new_user = {
             "user_name": "smoothies",
             "email": "smoothies@gmail.com",
@@ -356,8 +365,6 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
 
-    """Tests for user login"""
-
     def test_login_admin(self):
         """ Tests the api to login admin"""
         with self.test_client:
@@ -370,14 +377,15 @@ class BaseTestCase(unittest.TestCase):
     def test_login(self):
         """ Tests the api to login user"""
         with self.test_client:
-            response = self.signup("irenyak", "gigalasl@gmail.com", "gigals", 'user')
+            response = self.signup("irenyak", "gigalasl@gmail.com",
+                                   "gigals", 'user')
             response = self.login_user("irenyak", "gigals")
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'You have successfully '
                                               'logged in')
             self.assertEqual(data['status'], 200)
             self.assertEqual(response.status_code, 200)
-    
+
     def test_login_without_user_data(self):
         """ Tests the api to login user without user data"""
         login_details = {}
@@ -460,14 +468,14 @@ class BaseTestCase(unittest.TestCase):
                 "password": "google",
                 "role": "user"
             }
-            
-        logins= { 
+
+        logins = {
                 "user_name": "major",
                 "password": "badman"
             }
         with self.test_client:
             response = self.test_client.post('/api/v1/auth/signup',
-                                                 json=new_user)
+                                             json=new_user)
             response = self.test_client.post('/api/v1/auth/login',
                                              json=logins)
             data = json.loads(response.data.decode())
@@ -510,7 +518,8 @@ class BaseTestCase(unittest.TestCase):
     def test_get_all_users(self):
         """ Tests the api to retrieve all users"""
         with self.test_client:
-            response = self.signup("jammie", "jammie@gmail.com", "wisegal", "user")
+            response = self.signup("jammie", "jammie@gmail.com",
+                                   "wisegal", "user")
             response = self.test_client.get('/api/v1/users')
             data = json.loads(response.data.decode())
             self.assertEqual(data['status'], 200)
@@ -519,7 +528,8 @@ class BaseTestCase(unittest.TestCase):
     def test_get_a_single_user(self):
         """ Tests the api to retrieve a single user"""
         with self.test_client:
-            response = self.signup("humane", "jammiee@gmail.com", "wisegals", "user")
+            response = self.signup("humane", "jammiee@gmail.com",
+                                   "wisegals", "user")
             response = self.test_client.get('/api/v1/users/1')
             data = json.loads(response.data.decode())
             self.assertEqual(data['status'], 200)
@@ -528,14 +538,14 @@ class BaseTestCase(unittest.TestCase):
     def test_get_a_non_existent_user(self):
         """ Tests the api to return a non-existent user"""
         with self.test_client:
-            response = self.signup("kampala", "kampala@gmail.com", "cityland", "user")
+            response = self.signup("kampala", "kampala@gmail.com",
+                                   "cityland", "user")
             response = self.test_client.get('/api/v1/users/100')
             data = json.loads(response.data.decode())
-            self.assertEqual(data['message'], 'There is no such user in the list')
+            self.assertEqual(data['message'], 'There is no such user '
+                                              'in the list')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
-       
-    """Tests for creating a delivery order"""
 
     def test_create_order_without_token(self):
         """Tests api to create a delivery order without authorization"""
@@ -558,7 +568,7 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(data['message'], 'Delivery order created!')
             self.assertEqual(data['status'], 201)
             self.assertEqual(response.status_code, 200)
-    
+
     def test_create_order_without_order_data(self):
         """Tests api to create a delivery order without order data"""
         test_create_order = {}
@@ -573,8 +583,8 @@ class BaseTestCase(unittest.TestCase):
             """ Test create order with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Please fill in order data')
             self.assertEqual(data['status'], 400)
@@ -603,8 +613,8 @@ class BaseTestCase(unittest.TestCase):
             """ Test with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Oops! fill in user_id '
                                               'and should be an integer')
@@ -634,8 +644,8 @@ class BaseTestCase(unittest.TestCase):
             """ Test with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'sorry! the user id '
                                               'must be an integer')
@@ -665,8 +675,8 @@ class BaseTestCase(unittest.TestCase):
             """ Test with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'sorry! the user id '
                                               'can not be less than 1')
@@ -696,16 +706,18 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'User name must be a string')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
 
-
     def test_username_not_alphabetical(self):
-        """Tests api to create a delivery order with user name not alphabetical"""
+        """
+        Tests api to create a delivery order with
+        user name not alphabetical
+        """
         test_create_order = {
             "user_id": 1,
             "user_name": "&%#%%%78",
@@ -727,8 +739,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'User name must be '
                                               'alphabetical letters')
@@ -736,7 +748,10 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_username_length_less_than_five(self):
-        """Tests api to create a delivery order with username length less than 5"""
+        """
+        Tests api to create a delivery order with username
+        length less than 5
+        """
         test_create_order = {
             "user_id": 1,
             "user_name": "iren",
@@ -758,8 +773,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Username should be a string of '
                                               'at least 5 characters')
@@ -789,8 +804,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Contact is required '
                                               'it should not be blank')
@@ -820,8 +835,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Contact should be an interger '
                                               'of 7 to 15 digits')
@@ -851,8 +866,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Pickup location can not be '
                                               'an empty string')
@@ -883,8 +898,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Pickup location must be '
                                               'a string')
@@ -914,8 +929,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Pickup location must be '
                                               'alphabetical letters')
@@ -945,8 +960,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Pickup location must have '
                                               'at least 4 letters')
@@ -976,8 +991,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Please! the destination '
                                               'can not be empty')
@@ -1007,8 +1022,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Fill destination as a string')
             self.assertEqual(data['status'], 400)
@@ -1037,8 +1052,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Fill destination as '
                                               'alphabetical letters')
@@ -1069,8 +1084,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Destination must have '
                                               'atleast 4 letters')
@@ -1100,8 +1115,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Please the weight is required')
             self.assertEqual(data['status'], 400)
@@ -1130,8 +1145,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'sorry! the weight '
                                               'must be an integer > 0')
@@ -1161,8 +1176,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'sorry! the weight '
                                               'must be greater than 0')
@@ -1192,8 +1207,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Please the price should '
                                               'be filled')
@@ -1223,8 +1238,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Please! the price is '
                                               'required as an integer')
@@ -1254,8 +1269,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'The price can not be '
                                               'less than 1')
@@ -1285,10 +1300,10 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=test_create_order,
-                                              content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             content_type='application/json',
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
-            self.assertEqual(data['message'], 'Please fill in the status it cant not be blank')
+            self.assertEqual(data['message'], 'Please fill in the status it can not be blank')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
 
@@ -1318,14 +1333,13 @@ class BaseTestCase(unittest.TestCase):
             response = self.test_client.post('/api/v1/orders',
                                             json=test_create_order,
                                             content_type='application/json',
-                                                headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                            headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
-            self.assertEqual(data['message'], 'Status must be a string as either, '
-                                                'pending, delivered or cancelled')
+            self.assertEqual(data['message'], 'Status must be a string as '
+                                              'either pending, delivered '
+                                              'or cancelled')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
-     
-    """Tests for retrieving an order or orders"""
 
     def test_get_all_orders_when_orders_list_is_empty(self):
         """Tests api to retrieve all orders when orders list is empty"""
@@ -1338,8 +1352,8 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             # """Test this with token"""
             # response = self.test_client.get('/api/v1/orders',
-            #                                     content_type='application/json',
-            #                                     headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+            #                                  content_type='application/json',
+            #                                  headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             # data = json.loads(response.data.decode())
             # self.assertEqual(data['message'], 'There are no delivery '
             #                                   'orders yet')
@@ -1359,7 +1373,7 @@ class BaseTestCase(unittest.TestCase):
             # """Test this with token"""
             # response = self.test_client.get('/api/v1/orders/1',
             #                                  content_type='application/json',
-            #                                     headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+            #                                  headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             # data = json.loads(response.data)
             # self.assertEqual(data['message'], 'You have no orders yet')
             # self.assertEqual(data['status'], 400)
@@ -1377,8 +1391,8 @@ class BaseTestCase(unittest.TestCase):
             """Test this with token"""
             response = self.test_client.get('/api/v1/orders',
                                             json=self.test_create_order,
-                                             content_type='application/json',
-                                              headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+                                            content_type='application/json',
+                                            headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['status'], 200)
             self.assertEqual(response.status_code, 200)
@@ -1399,13 +1413,13 @@ class BaseTestCase(unittest.TestCase):
             """Test with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=self.test_create_order,
-                                              headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(200, response.status_code)
             self.assertEqual(data['status'], 201)
             response = self.test_client.get('/api/v1/orders/1',
                                             json=self.test_create_order,
-                                             headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+                                            headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['status'], 200)
             self.assertEqual(response.status_code, 200)
@@ -1419,7 +1433,7 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(data['message'], 'Please provide Token')
             self.assertEqual(data['status'], 401)
             self.assertEqual(response.status_code, 200)
-   
+
             """ Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=self.test_create_order,
@@ -1444,7 +1458,7 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(data['message'], 'Provide Token')
             self.assertEqual(data['status'], 401)
             self.assertEqual(response.status_code, 200)
-   
+
             """ Test this with token"""
             response = self.test_client.post('/api/v1/orders',
                                              json=self.test_create_order,
@@ -1472,7 +1486,7 @@ class BaseTestCase(unittest.TestCase):
             """ Test cancel order when order list is empty with token"""
             response = self.test_client.put('/api/v1/orders/1/cancel',
                                             json={'status': 'cancelled'},
-                                             headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+                                            headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'There are no orders in the list yet')
             self.assertEqual(data['status'], 400)
@@ -1486,7 +1500,7 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(data['status'], 201)
             response = self.test_client.put('/api/v1/orders/1/cancel',
                                             json={'status': 'cancelled'}, 
-                                             headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+                                            headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Delivery order has '
                                               'been cancelled')
@@ -1495,7 +1509,7 @@ class BaseTestCase(unittest.TestCase):
             """ Test cancel non-existent user with token"""
             response = self.test_client.put('/api/v1/orders/100/cancel',
                                             json={'status': 'cancelled'},
-                                             headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+                                            headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'The order has not been found')
             self.assertEqual(data['status'], 400)
@@ -1561,7 +1575,7 @@ class BaseTestCase(unittest.TestCase):
             """ Test test_cancel_all_orders_by_user when order list is empty with token"""
             response = self.test_client.put('/api/v1/orders/users/1/cancel_all',
                                             json={'status': 'cancelled'},
-                                             headers=dict(Authorization='Bearer ' + self.get_user_token()))
+                                            headers=dict(Authorization='Bearer ' + self.get_user_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'No orders to cancel')
             self.assertEqual(data['status'], 400)
@@ -1618,7 +1632,7 @@ class BaseTestCase(unittest.TestCase):
             """ Test cancel all orders when order list is empty with token"""
             response = self.test_client.put('/api/v1/orders/cancel',
                                             json={'status': 'cancelled'},
-                                             headers=dict(Authorization='Bearer ' + self.get_admin_token()))
+                                            headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'There are no delivery orders to cancel')
             self.assertEqual(data['status'], 400)
