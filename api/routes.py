@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from api.models import User, Order
 from api.controllers import User_Controller, Order_Controller
-from api.auth import *
+from api.auth import user_token, admin_token
 
 
 app = Flask(__name__)
@@ -30,7 +30,7 @@ def login():
 
 @app.route('/api/v1/users', methods=['GET'])
 def get_all_users():
-    """ 
+    """
     Endpoint to get all users that have
     signed up for accounts
     """
@@ -39,7 +39,7 @@ def get_all_users():
 
 @app.route('/api/v1/users/<int:user_id>', methods=['GET'])
 def get_a_single_user(user_id):
-    """ 
+    """
     Endpoint to get a single user who has
     signed up for an account
     """
@@ -56,7 +56,7 @@ def create_a_delivery_order():
 @app.route('/api/v1/orders', methods=['GET'])
 @admin_token
 def get_all_orders():
-    """ 
+    """
     Endpoint for the admin to get all delivery orders
     created by users
     """
@@ -99,6 +99,7 @@ def cancel_an_order_by_a_user(order_id, user_id):
     """Endpoint to cancel a delivery order by a user"""
     return ordercontroller.cancel_user_order(order_id, user_id)
 
+
 @app.route('/api/v1/orders/users/<int:user_id>/cancel_all',
            methods=['PUT'])
 @user_token
@@ -106,13 +107,9 @@ def cancel_all_orders_by_a_user(user_id):
     """Endpoint to cancel all delivery orders by a user"""
     return ordercontroller.cancel_userorders(user_id)
 
+
 @app.route('/api/v1/orders/cancel', methods=['PUT'])
 @admin_token
 def cancel_all_orders():
     """ Endpoint for admin to cancel all delivery orders placed"""
     return ordercontroller.cancel_orders()
-
-
-
-
-
