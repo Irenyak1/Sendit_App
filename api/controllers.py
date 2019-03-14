@@ -52,7 +52,6 @@ class User_Controller:
         """
         This method allows the user to login after cross checking their
         user_name, password, user role and user id.
-
         """
         user_data = request.get_json()
         user_name = user_data.get('user_name')
@@ -244,14 +243,13 @@ class Order_Controller:
             return jsonify({'status': 400,
                             'message': 'There are no orders in the list yet'})
 
-        for an_order in orders_list:
-            if an_order['order_id'] == order_id:
-                if an_order["status"] == "pending":
-                    an_order["status"] = status
-                    return jsonify({'status': 200,
-                                    'order': an_order,
-                                    'message': 'Delivery order has '
-                                    'been cancelled'})
+        for order in orders_list:
+            if order['order_id'] == order_id and order["status"] == "pending":
+                order["status"] = status
+                return jsonify({'status': 200,
+                                'order': order,
+                                'message': 'Delivery order has '
+                                'been cancelled'})
 
         return jsonify({'status': 400,
                         'message': 'The order has not been found'})
