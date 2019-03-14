@@ -2,13 +2,6 @@
 import unittest
 import json
 from api.routes import app
-# import unittest
-# from flask import json
-# from api.models import User, Order
-# from api.views import app
-# # from tests.get_token import GetToken
-# from api.auth import *
-# from api.controllers import User_Controller
 
 
 class BaseTestCase(unittest.TestCase):
@@ -68,7 +61,7 @@ class BaseTestCase(unittest.TestCase):
             ),
             content_type='application/json'
         )
-    
+
     def login_user(self, user_name, password):
         """
         Method for logging in a user 
@@ -153,7 +146,6 @@ class BaseTestCase(unittest.TestCase):
             ),
             content_type='application/json'
         )
-    """ Tests for the application"""
 
     def test_get_index_page(self):
         """ Tests the api to return the index page"""
@@ -165,7 +157,6 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(data['status'], 200)
             self.assertEqual(response.status_code, 200)
 
-    # """Tests for retrieving user or users"""
     # def test_get_all_users_when_userslist_is_empty(self):
     #   """ Tests the api to return all users when there are no users"""
     #     with self.test_client:
@@ -183,8 +174,6 @@ class BaseTestCase(unittest.TestCase):
     #         self.assertEqual(data['message'], 'No users to display')
     #         self.assertEqual(data['status'], 400)
     #         self.assertEqual(response.status_code, 200)
-
-    """Tests for user signup"""
 
     def test_signup(self):
         """ Tests the api to signup a user"""
@@ -512,8 +501,6 @@ class BaseTestCase(unittest.TestCase):
                                               'at least 6 characters')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
-
-    """Tests for retrieving user or users"""
 
     def test_get_all_users(self):
         """ Tests the api to retrieve all users"""
@@ -873,7 +860,6 @@ class BaseTestCase(unittest.TestCase):
                                               'an empty string')
             self.assertEqual(data['status'], 400)
             self.assertEqual(response.status_code, 200)
-
 
     def test_pickup_location_is_not_string(self):
         """Tests api to create a delivery order with pickup location not a string"""
@@ -1471,8 +1457,6 @@ class BaseTestCase(unittest.TestCase):
             data = json.loads(response.data.decode())
             self.assertEqual(data['status'], 200)
             self.assertEqual(response.status_code, 200)
-    
-    """Tests for cancelling an order or orders"""
 
     def test_cancel_an_order(self):
         """Tests api to cancel a pending order"""
