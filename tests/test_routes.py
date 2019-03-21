@@ -1479,7 +1479,7 @@ class BaseTestCase(unittest.TestCase):
             self.assertEqual(200, response.status_code)
             self.assertEqual(data['status'], 201)
             response = self.test_client.put('/api/v1/orders/1/cancel',
-                                            json={'status': 'cancelled'}, 
+                                            json={'status': 'cancelled'},
                                             headers=dict(Authorization='Bearer ' + self.get_admin_token()))
             data = json.loads(response.data.decode())
             self.assertEqual(data['message'], 'Delivery order has '
@@ -1500,7 +1500,7 @@ class BaseTestCase(unittest.TestCase):
     #     with self.test_client:
     #         """Test cancel_an_order_by_a_user without token"""
     #         response = self.test_client.put('/api/v1/orders/users/1/1/cancel',
-    #                                         json={'status': 'cancelled'})                          
+    #                                         json={'status': 'cancelled'})                    
     #         data = json.loads(response.data.decode())
     #         self.assertEqual(data['message'], "Provide Token")
     #         self.assertEqual(data['status'], 401)

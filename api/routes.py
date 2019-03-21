@@ -1,7 +1,9 @@
 from flask import Flask, jsonify
-from api.models import User, Order
+# from api.models import User
+# from api.models import User, Order
 from api.controllers import User_Controller, Order_Controller
 from api.auth import user_token, admin_token
+# from flasgger import swag_from
 
 
 app = Flask(__name__)
@@ -17,6 +19,7 @@ def index():
 
 
 @app.route('/api/v1/auth/signup', methods=['POST'])
+# @swag_from('../apidocs/users/create_user.yml')
 def signup_user():
     """ Endpoint to signup a user """
     return usercontroller.signup_user()
@@ -29,6 +32,7 @@ def login():
 
 
 @app.route('/api/v1/users', methods=['GET'])
+# @swag_from('../apidocs/users/fetch_all_users.yml')
 def get_all_users():
     """
     Endpoint to get all users that have
