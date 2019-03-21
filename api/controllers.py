@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import request, jsonify
 from api.models import User, users_list, Order, orders_list
 from api.validators import Validators
 import jwt
 import datetime
-from functools import wraps
+# from functools import wraps
 
 
 validators = Validators()
@@ -82,10 +82,10 @@ class User_Controller:
                                                'logged in',
                                     'user': user,
                                     'token': users_token.decode('utf-8')})
-        else:
-            return jsonify({'status': 400,
-                            'message': 'Username or password did '
-                            'not match any user'})
+
+        return jsonify({'status': 400,
+                        'message': 'Username or password did '
+                        'not match any user'})
 
     @staticmethod
     def get_all_users():
